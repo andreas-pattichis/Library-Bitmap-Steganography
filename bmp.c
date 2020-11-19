@@ -94,11 +94,11 @@ struct image* load_bmp(const char *file_name) {
     fread (img->pixel_array, *img_size, 1, fp);
     fclose(fp);
 
-    //convert the pixel array in-place from bgr colour space to rgb color space
-    convert_to_rgb(img);
-
-    //reverse pixel array
-    reverse_pixel_array(img);
+//    //convert the pixel array in-place from bgr colour space to rgb color space
+//    convert_to_rgb(img);
+//
+//    //reverse pixel array
+//    reverse_pixel_array(img);
 
     if (img->bbp > 24){  //Warn user if they load an image with a higher than 24bit bbp.
         printf("You have loaded a bmp with a higher than 24bit colourdepth.\nSome things may not behave correctly.\n");
@@ -121,11 +121,11 @@ void print_pixel_array(struct image *img) {
     int row_pos = 0;
 
     //Loop through the whole pixel array
-    for (i = 0; i < img->pixel_array_size; i++) {
+    for (i = 0; i < img->pixel_array_size-3; i++) {
 
         //print a new line after each row of pixels
         // skip the loop count ahead of the padded bytes
-        if (row_pos == img->row_length) {
+        if (row_pos == img->row_length/3) {
 
             printf("\n");
             row_pos = 0; 			//reset the row count.
@@ -133,7 +133,9 @@ void print_pixel_array(struct image *img) {
             continue;   			//for condition will add 1 to i;
         }
 
-        printf("%d. rgb[%d]\n", i, img->pixel_array[i]);
+        printf("R=%d,",img->pixel_array[i++]);
+        printf("\tG=%d,",img->pixel_array[i++]);
+        printf("\tB=%d\n",img->pixel_array[i]);
 
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
@@ -236,8 +238,8 @@ uint16_t get_colour_depth(struct image *img){
 
 
 int main(){
-   struct image *po =  load_bmp("4x3.bmp");
-   print_pixel_array(po);
+    struct image *po =  load_bmp("4x3.bmp");
+    print_pixel_array(po);
 
 
 
