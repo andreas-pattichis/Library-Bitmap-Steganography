@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "bmp.h"
 
 //file header info
@@ -73,6 +71,8 @@ IMAGE* load_bmp(const char *file_name) {
     if (img->bbp > 24){  //Warn user if they load an image with a higher than 24bit bbp.
         printf("You have loaded a bmp with a higher than 24bit colourdepth.\nSome things may not behave correctly.\n");
     }
+    img->file_head = &f_header;
+    img->info_head = &inf_header;
     return img;
 }
 
@@ -98,10 +98,10 @@ void print_pixel_array(IMAGE *img) {
             i = i + img->padding - 1; 	//skip padding, minus 1 because
             continue;   			    //for condition will add 1 to i;
         }
-
-        printf("R=%d,",img->pixel_array[i++]);
-        printf("\tG=%d,",img->pixel_array[i++]);
-        printf("\tB=%d\n",img->pixel_array[i]);
+        u_char b = img->pixel_array[i++];
+        u_char g = img->pixel_array[i++];
+        u_char r = img->pixel_array[i];
+        printf("R=%x \tG=%x \tB=%x\n",r,g,b);
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
@@ -199,7 +199,7 @@ char* my_substring(const char *string,int position, int length){
 
 int get_offset_in_data(int x, int y, int img_w, int img_h) {
     int padding_per_row = 4 % img_w;
-    int row_start_idx = (img_h-y)*img_w*3+((img_h-y)*padding_per_row);
+    int row_start_idx = (img_h-y)*img_w*3+((img_h-y)*padding_per_row*3);
     int idx_in_row = 3*x;
 //    printf("%d + %d\n",row_start_idx,idx_in_row);
     return row_start_idx+idx_in_row;
@@ -208,20 +208,12 @@ int get_offset_in_data(int x, int y, int img_w, int img_h) {
 Color *get_pixel_color(IMAGE* image, int x, int y) {
     char r,g,b;
     int offset = get_offset_in_data(x,y,image->width,image->height);
-    r = image->pixel_array[offset+2];
-    g = image->pixel_array[offset+1];
     b = image->pixel_array[offset];
+    g = image->pixel_array[offset+1];
+    r = image->pixel_array[offset+2];
+
     Color pixel_col = {r,g,b};
     Color *p = &pixel_col;
     return p;
 }
 
-
-int main(){
-    IMAGE *po =  load_bmp("4x3.bmp");
-    print_pixel_array(po);
-
-    Color *cp = get_pixel_color(po,0,3);
-    print_col(cp);
-    return 0;
-}
