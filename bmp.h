@@ -1,19 +1,19 @@
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char r, g, b;
 } Color;
 
-//structure to hold all necessary image data
-typedef struct{
-    unsigned char *pixel_array;
-    int padding;
-    int pixel_array_size;
-    uint32_t width;
-    uint32_t height;
-    uint32_t row_length;
-    uint32_t bbp;
-} IMAGE;
+//BMP header//
+typedef struct {
+    char ident[2];
+    char file_size[4];
+    char reserve_1[2];
+    char reserve_2[2];
+    char pix_array_offset[4];
+} FILE_HEADER;
 
 //DIB Header//
 typedef struct {
@@ -30,14 +30,18 @@ typedef struct {
     char important_colours[4];
 } INFO_HEADER;
 
-//BMP header//
-typedef struct {
-    char ident[2];
-    char file_size[4];
-    char reserve_1[2];
-    char reserve_2[2];
-    char pix_array_offset[4];
-} FILE_HEADER;
+//structure to hold all necessary image data
+typedef struct{
+    FILE_HEADER *file_head;
+    INFO_HEADER *info_head;
+    unsigned char *pixel_array;
+    int padding;
+    int pixel_array_size;
+    uint32_t width;
+    uint32_t height;
+    uint32_t row_length;
+    uint32_t bbp;
+} IMAGE;
 
 //print out pixel data to std out omitting padded bytes
 void print_pixel_array(IMAGE *img);
