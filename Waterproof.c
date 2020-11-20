@@ -10,6 +10,23 @@ void waterproof(IMAGE *cover, IMAGE *secret,int proof_len){
 
 }
 
+
+/*
+ * Open file. In case of error, print message and exit.
+ */
+FILE *open_file(const char *filename, const char *mode)
+{
+    FILE *fp = fopen(filename, mode);
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Could not open file %s", filename);
+
+        exit(EXIT_FAILURE);
+    }
+
+    return fp;
+}
+
 unsigned char calculate_mask(u_int proof_length){
     unsigned char mask = 0xff;
     int i=0;
@@ -63,41 +80,59 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
             continue;   			        // for condition will add 1 to i;
         }
         bc = cover->pixel_array[i];
-        printf("Cover blue is: %x \t\t\t\t\t",bc);
+//        printf("Cover blue is: %x \t\t\t\t\t",bc);
         bs = secret->pixel_array[i];
-        printf("Secret blue is: %x \t\t\t\t\t",bs);
+//        printf("Secret blue is: %x \t\t\t\t\t",bs);
         bn = (bs >> (8-proof_len)) | (bc & calculate_mask(proof_len));
-        printf("New blue is: %x\n",bn);
+//        printf("New blue is: %x\n",bn);
         new_pixel_array[i] = bn;
         i++;
         gc = cover->pixel_array[i];
-        printf("Cover green is: %x \t\t\t\t\t",gc);
+//        printf("Cover green is: %x \t\t\t\t\t",gc);
         gs = secret->pixel_array[i];
-        printf("Secret green is: %x \t\t\t\t\t",gs);
+//        printf("Secret green is: %x \t\t\t\t\t",gs);
         gn = (gs >> (8-proof_len)) | (gc & calculate_mask(proof_len));
-        printf("New green is: %x\n",gn);
+//        printf("New green is: %x\n",gn);
         new_pixel_array[i] = gn;
         i++;
         rc = cover->pixel_array[i];
-        printf("Cover red is: %x \t\t\t\t\t",rc);
+//        printf("Cover red is: %x \t\t\t\t\t",rc);
         rs = secret->pixel_array[i];
-        printf("Secret red is: %x \t\t\t\t\t",rs);
+//        printf("Secret red is: %x \t\t\t\t\t",rs);
         rn = (rs >> (8-proof_len)) | (rc & calculate_mask(proof_len));
-        printf("New red is: %x\n",rn);
+//        printf("New red is: %x\n",rn);
         new_pixel_array[i] = gn;
 
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
-    print_new_pixel_array(new_pixel_array,new_arr_length,new_row_length,new_padding);
+
+    IMAGE new;
+    new.padding = cover->padding;
+    new.row_length = cover->row_length;
+    new.pixel_array_size = cover->pixel_array_size;
+    new.width = cover->width;
+    new.height = cover->height;
+    new.bbp = cover->bbp;
+    new.pixel_array = new_pixel_array;
+    // Save file
+    FILE *file = fopen("file_name.bmp", "wb");
+    fwrite(cover->file_head, sizeof(FILE_HEADER), 1, file);
+    fwrite(cover->info_head, sizeof(INFO_HEADER), 1, file);
+    fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
+    fclose(file);
+
+
+
+//    print_new_pixel_array(new_pixel_array,new_arr_length,new_row_length,new_padding);
 }
 
 int main(){
-//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-    IMAGE *cover =  load_bmp("4x3.bmp");
-    IMAGE *secret =  load_bmp("4x3.bmp");
+    IMAGE *cover =  load_bmp("IMG_6865.bmp");
+    IMAGE *secret =  load_bmp("IMG_6875.bmp");
+//    IMAGE *cover =  load_bmp("4x3.bmp");
+//    IMAGE *secret =  load_bmp("4x3.bmp");
 
-    change_pixels(cover,secret,2);
+    change_pixels(cover,secret,4);
     return 0;
 }
