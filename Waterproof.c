@@ -46,10 +46,10 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
     u_char *new_pixel_array = malloc(cover->pixel_array_size);
     int new_padding = cover->padding;
     int new_arr_length = cover->pixel_array_size;
-    printf ("new length is: %d",new_arr_length);
+    printf ("new length is: %d\n",new_arr_length);
     int new_row_length = cover->row_length;
     memcpy(new_pixel_array,cover->pixel_array,new_arr_length);
-    char rc,gc,bc,rs,gs,bs,rn,gn,bn;
+    u_char rc,gc,bc,rs,gs,bs,rn,gn,bn;
     int i;
     int row_pos = 0;
     //Loop through the whole pixel array
@@ -63,21 +63,27 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
             continue;   			        // for condition will add 1 to i;
         }
         bc = cover->pixel_array[i];
-        printf("Cover blue is: %x",bc);
+        printf("Cover blue is: %x \t\t\t\t\t",bc);
         bs = secret->pixel_array[i];
-        printf("Secret blue is: %x",bs);
-        bn = (bs >> (8-proof_len)) & (bc & calculate_mask(proof_len));
-        printf("New blue is: %x",bn);
+        printf("Secret blue is: %x \t\t\t\t\t",bs);
+        bn = (bs >> (8-proof_len)) | (bc & calculate_mask(proof_len));
+        printf("New blue is: %x\n",bn);
         new_pixel_array[i] = bn;
         i++;
         gc = cover->pixel_array[i];
+        printf("Cover green is: %x \t\t\t\t\t",gc);
         gs = secret->pixel_array[i];
-        gn = (gs >> (8-proof_len)) & (gc & calculate_mask(proof_len));
+        printf("Secret green is: %x \t\t\t\t\t",gs);
+        gn = (gs >> (8-proof_len)) | (gc & calculate_mask(proof_len));
+        printf("New green is: %x\n",gn);
         new_pixel_array[i] = gn;
         i++;
         rc = cover->pixel_array[i];
+        printf("Cover red is: %x \t\t\t\t\t",rc);
         rs = secret->pixel_array[i];
-        rn = (rs >> (8-proof_len)) & (rc & calculate_mask(proof_len));
+        printf("Secret red is: %x \t\t\t\t\t",rs);
+        rn = (rs >> (8-proof_len)) | (rc & calculate_mask(proof_len));
+        printf("New red is: %x\n",rn);
         new_pixel_array[i] = gn;
 
         //advance the position we are in the row, so we know when we can skip the padding bytes
