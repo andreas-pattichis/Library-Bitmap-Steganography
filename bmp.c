@@ -1,46 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include "bmp.h"
-
-typedef struct {
-    char r, g, b;
-} Color;
-
-void print_col(Color *c){
-    int w = c->g;
-    printf("%X\n",w);
-    printf("R=%x,G=%cB=%x\n",c->r,c->g,c->b);
-}
-
-//BMP header//
-typedef struct {
-    char ident[2];
-    char file_size[4];
-    char reserve_1[2];
-    char reserve_2[2];
-    char pix_array_offset[4];
-} FILE_HEADER;
-
-
-//DIB Header//
-typedef struct {
-    char size[4];
-    char width[4];
-    char height[4];
-    char colour_plain[2];
-    char bbp[2];			//colour depth
-    char compression_method[4];
-    char img_size[4]; 		//raw bitmap size
-    char horizontal_res[4];
-    char vertical_res[4];
-    char num_colours[4]; 		//colours in colour pallet
-    char important_colours[4];
-} INFO_HEADER;
 
 //file header info
 FILE_HEADER f_header;
 INFO_HEADER inf_header;
+
+void print_col(Color *c){
+    printf("R=%x,G=%x,B=%x\n",c->r,c->g,c->b);
+}
 
 IMAGE* load_bmp(const char *file_name) {
     IMAGE *img;
@@ -141,7 +109,6 @@ void print_pixel_array(IMAGE *img) {
 
 //convert the pixel array in-place from blue, green, red colour space, to the red, green, blue colour space
 void convert_to_rgb(IMAGE *img) {
-
     int i;
     int row_pos = 0;
     int flag = 0;
@@ -232,21 +199,21 @@ char* my_substring(const char *string,int position, int length){
 
 int get_offset_in_data(int x, int y, int img_w, int img_h) {
     int padding_per_row = 4 % img_w;
-    int row_start_idx = (img_h-y)*img_w*3;
+    int row_start_idx = (img_h-y)*img_w*3+((img_h-y)*padding_per_row);
     int idx_in_row = 3*x;
-    printf("%d + %d\n",row_start_idx,idx_in_row);
+//    printf("%d + %d\n",row_start_idx,idx_in_row);
     return row_start_idx+idx_in_row;
 }
 
-Color get_pixel(IMAGE* image, int x, int y) {
+Color *get_pixel_color(IMAGE* image, int x, int y) {
     char r,g,b;
-    char *ra,*ga,*ba;
     int offset = get_offset_in_data(x,y,image->width,image->height);
     r = image->pixel_array[offset+2];
     g = image->pixel_array[offset+1];
     b = image->pixel_array[offset];
     Color pixel_col = {r,g,b};
-    return pixel_col;
+    Color *p = &pixel_col;
+    return p;
 }
 
 
@@ -254,9 +221,7 @@ int main(){
     IMAGE *po =  load_bmp("4x3.bmp");
     print_pixel_array(po);
 
-
-    Color col = get_pixel(po,1,4);
-    Color *cp = &col;
+    Color *cp = get_pixel_color(po,0,3);
     print_col(cp);
     return 0;
 }
