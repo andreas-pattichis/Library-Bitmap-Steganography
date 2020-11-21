@@ -98,9 +98,9 @@ void print_pixel_array(IMAGE *img) {
             i = i + img->padding - 1; 	//skip padding, minus 1 because
             continue;   			    //for condition will add 1 to i;
         }
-        u_char b = img->pixel_array[i++];
-        u_char g = img->pixel_array[i++];
-        u_char r = img->pixel_array[i];
+        unsigned char b = img->pixel_array[i++];
+        unsigned char g = img->pixel_array[i++];
+        unsigned char r = img->pixel_array[i];
         printf("R=%x \tG=%x \tB=%x\n",r,g,b);
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;

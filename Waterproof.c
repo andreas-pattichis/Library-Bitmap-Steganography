@@ -25,7 +25,7 @@ FILE *open_file(const char *filename, const char *mode)
     return fp;
 }
 
-unsigned char calculate_mask(u_int proof_length){
+unsigned char calculate_mask(unsigned int proof_length){
     unsigned char mask = 0xff;
     int i=0;
     while (i < proof_length){
@@ -35,7 +35,7 @@ unsigned char calculate_mask(u_int proof_length){
     return mask;
 }
 
-void print_new_pixel_array(const u_char *arr,int arr_size,int r_len,int padd) {
+void print_new_pixel_array(const unsigned char *arr,int arr_size,int r_len,int padd) {
     int i;
     int row_pos = 0;
     //Loop through the whole pixel array
@@ -48,23 +48,23 @@ void print_new_pixel_array(const u_char *arr,int arr_size,int r_len,int padd) {
             i = i + padd - 1; 	        //skip padding, minus 1 because
             continue;   			    //for condition will add 1 to i;
         }
-        u_char b = arr[i++];
-        u_char g = arr[i++];
-        u_char r = arr[i];
+        unsigned char b = arr[i++];
+        unsigned char g = arr[i++];
+        unsigned char r = arr[i];
         printf("R=%x \tG=%x \tB=%x\n",r,g,b);
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
 }
 
-void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
-    u_char *new_pixel_array = malloc(cover->pixel_array_size);
+void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
+    unsigned char *new_pixel_array = malloc(cover->pixel_array_size);
     int new_padding = cover->padding;
     int new_arr_length = cover->pixel_array_size;
     printf ("new length is: %d\n",new_arr_length);
     int new_row_length = cover->row_length;
     memcpy(new_pixel_array,cover->pixel_array,new_arr_length);
-    u_char rc,gc,bc,rs,gs,bs,rn,gn,bn;
+    unsigned char rc,gc,bc,rs,gs,bs,rn,gn,bn;
     int i;
     int row_pos = 0;
     //Loop through the whole pixel array
@@ -126,11 +126,11 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
 }
 
 
-void decode_image(IMAGE *img,u_int proof_len){
-    u_char *new_pixel_array = calloc(img->pixel_array_size,1);
+void decode_image(IMAGE *img,unsigned int proof_len){
+    unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     int new_arr_length = img->pixel_array_size;
  //   memcpy(new_pixel_array,img->pixel_array,new_arr_length);
-    u_char r,g,b;
+    unsigned char r,g,b;
     int i;
     int row_pos = 0;
     //Loop through the whole pixel array
