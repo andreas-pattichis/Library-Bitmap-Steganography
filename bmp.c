@@ -88,8 +88,8 @@ IMAGE* load_bmp(const char *file_name) {
     if (img->bbp > 24){  //Warn user if they load an image with a higher than 24bit bbp.
         printf("You have loaded a bmp with a higher than 24bit colourdepth.\nSome things may not behave correctly.\n");
     }
-    img->file_head = &f_header;
-    img->info_head = &inf_header;
+    img->file_head = f_header;
+    img->info_head = inf_header;
     return img;
 }
 
@@ -100,21 +100,21 @@ void free_img(unsigned char *pixel_array, IMAGE *img) {
 }
 
 void print_information(IMAGE *img){
-    int size = img->file_head->file_size;
-    int res1 = img->file_head->reserve_1;
-    int res2 = img->file_head->reserve_2;
-    int offset = img->file_head->pix_array_offset;
-    int ssize = img->info_head->size;
+    int size = img->file_head.file_size;
+    int res1 = img->file_head.reserve_1;
+    int res2 = img->file_head.reserve_2;
+    int offset = img->file_head.pix_array_offset;
+    int ssize = img->info_head.size;
     int width = img->width;
     int height = img->height;
-    int planes = img->info_head->colour_plain;
-    int bitC = img->info_head->bbp;
-    int comp = img->info_head->compression_method;
-    int imgsize = img->info_head->img_size;
-    int x = img->info_head->horizontal_res;
-    int y = img->info_head->vertical_res;
-    int col = img->info_head->num_colours;
-    int impcol = img->info_head->important_colours;
+    int planes = img->info_head.colour_plain;
+    int bitC = img->info_head.bbp;
+    int comp = img->info_head.compression_method;
+    int imgsize = img->info_head.img_size;
+    int x = img->info_head.horizontal_res;
+    int y = img->info_head.vertical_res;
+    int col = img->info_head.num_colours;
+    int impcol = img->info_head.important_colours;
     printf("BITMAP_FILE_HEADER\n");
     printf("==================\n");
     printf("bfType: BM\n");
@@ -129,7 +129,7 @@ void print_information(IMAGE *img){
     printf("biHeight: %d\n",height);
     printf("biPlanes: %d\n",planes);
     printf("biBitCount: %d\n",bitC);
-    printf("biCompression:: %d\n",comp);
+    printf("biCompression: %d\n",comp);
     printf("biSizeImage: %d\n",imgsize);
     printf("biXPelsPerMeter: %d\n",x);
     printf("biYPelsPerMeter: %d\n",y);
