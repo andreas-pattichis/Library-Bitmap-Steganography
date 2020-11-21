@@ -7,9 +7,7 @@ void waterproof(IMAGE *cover, IMAGE *secret,int proof_len){
         printf("The 2 pictures you have entered do not have the same dimensions.\n");
         return;
     }
-
 }
-
 
 /*
  * Open file. In case of error, print message and exit.
@@ -47,7 +45,7 @@ void print_new_pixel_array(const u_char *arr,int arr_size,int r_len,int padd) {
         if (row_pos == r_len/3) {
             printf("\n");
             row_pos = 0; 			    //reset the row count.
-            i = i + padd - 1; 	//skip padding, minus 1 because
+            i = i + padd - 1; 	        //skip padding, minus 1 because
             continue;   			    //for condition will add 1 to i;
         }
         u_char b = arr[i++];

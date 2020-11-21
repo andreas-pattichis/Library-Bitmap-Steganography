@@ -32,7 +32,7 @@ IMAGE* load_bmp(const char *file_name) {
     fread (&inf_header, sizeof(INFO_HEADER), 1, fp);
     fclose(fp);
 
-    //convert file header info to appropriate types
+    // Convert file header info to appropriate types
     uint32_t *pix_array_offset = &f_header.pix_array_offset;
     uint32_t *img_width = &inf_header.width;
     uint32_t *img_height = &inf_header.height;
