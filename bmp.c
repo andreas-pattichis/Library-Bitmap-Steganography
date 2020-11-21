@@ -82,6 +82,18 @@ void free_img(unsigned char *pixel_array, IMAGE *img) {
     free(img);
 }
 
+void print_information(IMAGE *img){
+    printf("BITMAP_FILE_HEADER\n");
+    printf("==================\n");
+    printf("bfType: %c%c\n",img->file_head->ident[0],img->file_head->ident[1]);
+    printf("BMbfSize: %u\n",img->file_head->file_size);
+    printf("bfReserved1: %d\n",img->file_head->reserve_1);
+    printf("bfReserved2: %d\n",img->file_head->reserve_2);
+    printf("bfOffBits: %d\n\n",img->file_head->pix_array_offset);
+    printf("");
+
+}
+
 //print out pixel data to std out omitting padded bytes for debugging purposes
 void print_pixel_array(IMAGE *img) {
     int i;
