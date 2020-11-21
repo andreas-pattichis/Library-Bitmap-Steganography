@@ -127,9 +127,9 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
 
 
 void decode_image(IMAGE *img,u_int proof_len){
-    u_char *new_pixel_array = malloc(img->pixel_array_size);
+    u_char *new_pixel_array = calloc(img->pixel_array_size,1);
     int new_arr_length = img->pixel_array_size;
-    memcpy(new_pixel_array,img->pixel_array,new_arr_length);
+ //   memcpy(new_pixel_array,img->pixel_array,new_arr_length);
     u_char r,g,b;
     int i;
     int row_pos = 0;
@@ -147,20 +147,19 @@ void decode_image(IMAGE *img,u_int proof_len){
 //        printf("Original is %x\n",b);
         b = b << (8-proof_len);
 //        printf("After << is %x\n",b);
-        b = b & calculate_mask(proof_len);
+//        b = b & calculate_mask(proof_len);
 //        printf("Final is %x\n",b);
         new_pixel_array[i] = b;
         i++;
         g = img->pixel_array[i];
         g = g << (8-proof_len);
-        g = g & calculate_mask(proof_len);
+//        g = g & calculate_mask(proof_len);
         new_pixel_array[i] = g;
         i++;
         r = img->pixel_array[i];
         r = r << (8-proof_len);
-        r = r & calculate_mask(proof_len);
+//        r = r & calculate_mask(proof_len);
         new_pixel_array[i] = r;
-        i++;
 
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
