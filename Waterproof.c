@@ -125,12 +125,72 @@ void change_pixels(IMAGE *cover, IMAGE *secret,u_int proof_len) {
 //    print_new_pixel_array(new_pixel_array,new_arr_length,new_row_length,new_padding);
 }
 
+
+void decode_image(IMAGE *img,u_int proof_len){
+    u_char *new_pixel_array = malloc(img->pixel_array_size);
+    int new_arr_length = img->pixel_array_size;
+    memcpy(new_pixel_array,img->pixel_array,new_arr_length);
+    u_char r,g,b;
+    int i;
+    int row_pos = 0;
+    //Loop through the whole pixel array
+    for (i = 0; i < img->pixel_array_size-3; i++) {
+        //print a new line after each row of pixels
+        // skip the loop count ahead of the padded bytes
+        if (row_pos == img->row_length/3) {
+            printf("\n");
+            row_pos = 0; 			        // reset the row count.
+            i = i + img->padding - 1;   	// skip padding, minus 1 because
+            continue;   			        // for condition will add 1 to i;
+        }
+        b = img->pixel_array[i];
+//        printf("Original is %x\n",b);
+        b = b << (8-proof_len);
+//        printf("After << is %x\n",b);
+        b = b & calculate_mask(proof_len);
+//        printf("Final is %x\n",b);
+        new_pixel_array[i] = b;
+        i++;
+        g = img->pixel_array[i];
+        g = g << (8-proof_len);
+        g = g & calculate_mask(proof_len);
+        new_pixel_array[i] = g;
+        i++;
+        r = img->pixel_array[i];
+        r = r << (8-proof_len);
+        r = r & calculate_mask(proof_len);
+        new_pixel_array[i] = r;
+        i++;
+
+        //advance the position we are in the row, so we know when we can skip the padding bytes
+        row_pos++;
+    }
+
+    IMAGE new;
+    new.padding = img->padding;
+    new.row_length = img->row_length;
+    new.pixel_array_size = img->pixel_array_size;
+    new.width = img->width;
+    new.height = img->height;
+    new.bbp = img->bbp;
+    new.pixel_array = new_pixel_array;
+    // Save file
+    FILE *file = fopen("decoded.bmp", "wb");
+    fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
+    fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
+    fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
+    fclose(file);
+}
+
 int main(){
     IMAGE *cover =  load_bmp("IMG_6865.bmp");
     IMAGE *secret =  load_bmp("IMG_6875.bmp");
+    change_pixels(cover,secret,4);
+    IMAGE *coded = load_bmp("file_name.bmp");
+    decode_image(coded,4);
 //    IMAGE *cover =  load_bmp("4x3.bmp");
 //    IMAGE *secret =  load_bmp("4x3.bmp");
 
-    change_pixels(cover,secret,4);
+
     return 0;
 }
