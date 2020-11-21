@@ -182,14 +182,13 @@ void decode_image(IMAGE *img,unsigned int proof_len){
 }
 
 int main(){
-    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-    change_pixels(cover,secret,4);
-    IMAGE *coded = load_bmp("file_name.bmp");
-    decode_image(coded,4);
+    IMAGE *cover =  load_bmp("4x3.bmp");
+    print_information(cover);
+//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
+//    change_pixels(cover,secret,4);
+//    IMAGE *coded = load_bmp("file_name.bmp");
+//    decode_image(coded,4);
 //    IMAGE *cover =  load_bmp("4x3.bmp");
 //    IMAGE *secret =  load_bmp("4x3.bmp");
-
-
     return 0;
 }
