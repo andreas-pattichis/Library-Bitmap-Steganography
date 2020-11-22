@@ -42,8 +42,8 @@ typedef struct {
  * Struct to hold all necessary image data
  */
 typedef struct{
-    INFO_HEADER info_head;
-    FILE_HEADER file_head;
+    INFO_HEADER *info_head;
+    FILE_HEADER *file_head;
     unsigned char *pixel_array;
     int padding;
     int pixel_array_size;
