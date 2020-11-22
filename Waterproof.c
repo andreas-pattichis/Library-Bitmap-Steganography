@@ -196,16 +196,22 @@ void createGrayscale(IMAGE *img) {
             continue;   			    //for condition will add 1 to i;
         }
 
-        //Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
-        int sum = img->pixel_array[i] << 1;                             // Blue
-        sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
-        sum += img->pixel_array[i+2];                                   // Red
-        new_pixel_array[i++] =  (unsigned char)(sum >> 3);
-        new_pixel_array[i++] =  (unsigned char)(sum >> 3);
-        new_pixel_array[i++] =  (unsigned char)(sum >> 3);
-//        img->pixel_array[i++] = (unsigned char)(sum >> 3);
-//        img->pixel_array[i++] = (unsigned char)(sum >> 3);
-//        img->pixel_array[i] = (unsigned char)(sum >> 3);
+        // Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
+        // int sum = img->pixel_array[i] << 1;                             // Blue
+        // sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
+        // sum += img->pixel_array[i+2];                                   // Red
+
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i] = (unsigned char)(sum >> 3);
+
+        //Luminance = 0.299*red + 0.587*green + 0.114*blue
+        int sum = (unsigned char)(0.114*img->pixel_array[i] + 0.587*img->pixel_array[i+1] + 0.299 *img->pixel_array[i+2]);
+        new_pixel_array[i++] =  (unsigned char)(sum);
+        new_pixel_array[i++] =  (unsigned char)(sum);
+        new_pixel_array[i++] =  (unsigned char)(sum);
+
+
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
