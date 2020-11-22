@@ -240,11 +240,14 @@ void createGrayscale(IMAGE *img) {
 
 
 int getBit(char *m, int n){
-    int i = n/8;
-    char ch = m[i];
-    int bitStatus;
-    bitStatus = (ch >> 7-(n%8)) & 1;
-    return bitStatus;
+    if(n>=0 && n<=8*strlen(m)) {
+        int i = n / 8;
+        char ch = m[i];
+        int bitStatus;
+        bitStatus = (ch >> 7 - (n % 8)) & 1;
+        return bitStatus;
+    }
+    return 0;
 }
 
 int main(){
