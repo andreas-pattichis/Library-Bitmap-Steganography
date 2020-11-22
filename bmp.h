@@ -97,4 +97,8 @@ int get_offset_in_data(int x, int y, int img_w, int img_h);
 
 Color *get_pixel_color(IMAGE* image, int x, int y);
 
+/**
+ * Prints a list displaying all the information of the BMP Image
+ * @param img
+ */
 void print_information(IMAGE *img);

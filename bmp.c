@@ -100,41 +100,46 @@ void free_img(unsigned char *pixel_array, IMAGE *img) {
 }
 
 void print_information(IMAGE *img){
-    int size = img->file_head.file_size;
-    int res1 = img->file_head.reserve_1;
-    int res2 = img->file_head.reserve_2;
-    int offset = img->file_head.pix_array_offset;
-    int ssize = img->info_head.size;
-    int width = img->width;
-    int height = img->height;
-    int planes = img->info_head.colour_plain;
-    int bitC = img->info_head.bbp;
-    int comp = img->info_head.compression_method;
-    int imgsize = img->info_head.img_size;
-    int x = img->info_head.horizontal_res;
-    int y = img->info_head.vertical_res;
-    int col = img->info_head.num_colours;
-    int impcol = img->info_head.important_colours;
+    //BITMAP_FILE_HEADER
+    int BMbfSize = img->file_head.file_size;
+    int bfReserved1 = img->file_head.reserve_1;
+    int bfReserved2 = img->file_head.reserve_2;
+    int bfOffBits = img->file_head.pix_array_offset;
+
+    //BITMAP_INFO_HEADER
+    int biSize = img->info_head.size;
+    int biWidth = img->width;
+    int biHeight = img->height;
+    int biPlanes = img->info_head.colour_plain;
+    int biBitCount = img->info_head.bbp;
+    int biCompression = img->info_head.compression_method;
+    int biSizeImage = img->info_head.img_size;
+    int biXPelsPerMeter = img->info_head.horizontal_res;
+    int biYPelsPerMeter = img->info_head.vertical_res;
+    int biClrUsed = img->info_head.num_colours;
+    int biClrImportant = img->info_head.important_colours;
+
     printf("BITMAP_FILE_HEADER\n");
     printf("==================\n");
     printf("bfType: BM\n");
-    printf("BMbfSize: %d\n",size);
-    printf("bfReserved1: %d\n",res1);
-    printf("bfReserved2: %d\n",res2);
-    printf("bfOffBits: %d\n",offset);
+    printf("BMbfSize: %d\n", BMbfSize);
+    printf("bfReserved1: %d\n", bfReserved1);
+    printf("bfReserved2: %d\n", bfReserved2);
+    printf("bfOffBits: %d\n", bfOffBits);
     printf("\nBITMAP_INFO_HEADER\n");
     printf("==================\n");
-    printf("biSize: %d\n",ssize);
-    printf("biWidth: %d\n",width);
-    printf("biHeight: %d\n",height);
-    printf("biPlanes: %d\n",planes);
-    printf("biBitCount: %d\n",bitC);
-    printf("biCompression: %d\n",comp);
-    printf("biSizeImage: %d\n",imgsize);
-    printf("biXPelsPerMeter: %d\n",x);
-    printf("biYPelsPerMeter: %d\n",y);
-    printf("biClrUsed: %d\n",col);
-    printf("biClrImportant: %d\n",impcol);
+    printf("biSize: %d\n",biSize);
+    printf("biWidth: %d\n",biWidth);
+    printf("biHeight: %d\n",biHeight);
+    printf("biPlanes: %d\n",biPlanes);
+    printf("biBitCount: %d\n",biBitCount);
+    printf("biCompression: %d\n",biCompression);
+    printf("biSizeImage: %d\n",biSizeImage);
+    printf("biXPelsPerMeter: %d\n",biXPelsPerMeter);
+    printf("biYPelsPerMeter: %d\n",biYPelsPerMeter);
+    printf("biClrUsed: %d\n",biClrUsed);
+    printf("biClrImportant: %d\n",biClrImportant);
+    printf("\n***************************************************************************\n");
 }
 
 //print out pixel data to std out omitting padded bytes for debugging purposes
