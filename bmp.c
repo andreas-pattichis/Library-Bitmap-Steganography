@@ -216,4 +216,3 @@ Color *get_pixel_color(IMAGE* image, int x, int y) {
     Color *p = &pixel_col;
     return p;
 }
-
