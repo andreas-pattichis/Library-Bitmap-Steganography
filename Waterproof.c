@@ -239,13 +239,13 @@ void createGrayscale(IMAGE *img) {
 }
 
 int main(){
-    //IMAGE *test1 =  load_bmp("4x3.bmp");
-    //print_information(test1);
+    IMAGE *test1 =  load_bmp("4x3.bmp");
+    print_information(test1);
     //IMAGE *test2 =  load_bmp("image2.bmp");
     //print_information(test2);
 
-    IMAGE *test1 =  load_bmp("image1.bmp");
-    createGrayscale(test1);
+    IMAGE *test2 =  load_bmp("image1.bmp");
+    createGrayscale(test2);
 //    IMAGE *cover =  load_bmp("IMG_6865.bmp");
 //    IMAGE *secret =  load_bmp("IMG_6875.bmp");
 //    change_pixels(cover,secret,4);

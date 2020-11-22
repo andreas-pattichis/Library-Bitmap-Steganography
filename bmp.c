@@ -216,3 +216,46 @@ Color *get_pixel_color(IMAGE* image, int x, int y) {
     Color *p = &pixel_col;
     return p;
 }
+
+void print_information(IMAGE *img){
+    //BITMAP_FILE_HEADER
+    int BMbfSize = img->file_head->file_size;
+    int bfReserved1 = img->file_head->reserve_1;
+    int bfReserved2 = img->file_head->reserve_2;
+    int bfOffBits = img->file_head->pix_array_offset;
+
+    //BITMAP_INFO_HEADER
+    int biSize = img->info_head->size;
+    int biWidth = img->width;
+    int biHeight = img->height;
+    int biPlanes = img->info_head->colour_plain;
+    int biBitCount = img->info_head->bbp;
+    int biCompression = img->info_head->compression_method;
+    int biSizeImage = img->info_head->img_size;
+    int biXPelsPerMeter = img->info_head->horizontal_res;
+    int biYPelsPerMeter = img->info_head->vertical_res;
+    int biClrUsed = img->info_head->num_colours;
+    int biClrImportant = img->info_head->important_colours;
+
+    printf("BITMAP_FILE_HEADER\n");
+    printf("==================\n");
+    printf("bfType: BM\n");
+    printf("BMbfSize: %d\n", BMbfSize);
+    printf("bfReserved1: %d\n", bfReserved1);
+    printf("bfReserved2: %d\n", bfReserved2);
+    printf("bfOffBits: %d\n", bfOffBits);
+    printf("\nBITMAP_INFO_HEADER\n");
+    printf("==================\n");
+    printf("biSize: %d\n",biSize);
+    printf("biWidth: %d\n",biWidth);
+    printf("biHeight: %d\n",biHeight);
+    printf("biPlanes: %d\n",biPlanes);
+    printf("biBitCount: %d\n",biBitCount);
+    printf("biCompression: %d\n",biCompression);
+    printf("biSizeImage: %d\n",biSizeImage);
+    printf("biXPelsPerMeter: %d\n",biXPelsPerMeter);
+    printf("biYPelsPerMeter: %d\n",biYPelsPerMeter);
+    printf("biClrUsed: %d\n",biClrUsed);
+    printf("biClrImportant: %d\n",biClrImportant);
+    printf("\n***************************************************************************\n");
+}
