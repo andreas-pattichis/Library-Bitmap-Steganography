@@ -238,14 +238,29 @@ void createGrayscale(IMAGE *img) {
     fclose(file);
 }
 
+
+int getBit(char *m, int n){
+    int i = n/8;
+    char ch = m[i];
+    int bitStatus;
+    bitStatus = (ch >> 7-(n%8)) & 1;
+    return bitStatus;
+}
+
 int main(){
-    IMAGE *test1 =  load_bmp("4x3.bmp");
-    print_information(test1);
+    //01100011 01100001 01101110
+    for (int i = 0; i < 24; ++i) {
+        if(i%8==0)printf("\n");
+        printf("%d",getBit("can", i));
+    }
+
+    //IMAGE *test1 =  load_bmp("4x3.bmp");
+   // print_information(test1);
     //IMAGE *test2 =  load_bmp("image2.bmp");
     //print_information(test2);
 
-    IMAGE *test2 =  load_bmp("image1.bmp");
-    createGrayscale(test2);
+   // IMAGE *test2 =  load_bmp("image1.bmp");
+   // createGrayscale(test2);
 //    IMAGE *cover =  load_bmp("IMG_6865.bmp");
 //    IMAGE *secret =  load_bmp("IMG_6875.bmp");
 //    change_pixels(cover,secret,4);
