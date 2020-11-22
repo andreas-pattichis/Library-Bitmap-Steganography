@@ -196,16 +196,16 @@ void createGrayscale(IMAGE *img) {
             continue;   			    //for condition will add 1 to i;
         }
 
-        //Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
-        //int sum = img->pixel_array[i] << 1;                             // Blue
-       // sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
-        //sum += img->pixel_array[i+2];                                   // Red
-        //[i++] =  (unsigned char)(sum >> 3);
-        //new_pixel_array[i++] =  (unsigned char)(sum >> 3);
-        //new_pixel_array[i+] =  (unsigned char)(sum >> 3);
-        //        img->pixel_array[i++] = (unsigned char)(sum >> 3);
-//        img->pixel_array[i++] = (unsigned char)(sum >> 3);
-//        img->pixel_array[i] = (unsigned char)(sum >> 3);
+        // Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
+        // int sum = img->pixel_array[i] << 1;                             // Blue
+        // sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
+        // sum += img->pixel_array[i+2];                                   // Red
+        // [i++] =  (unsigned char)(sum >> 3);
+        // new_pixel_array[i++] =  (unsigned char)(sum >> 3);
+        // new_pixel_array[i+] =  (unsigned char)(sum >> 3);
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i] = (unsigned char)(sum >> 3);
 
 
         int sum = (unsigned char)(0.114* img->pixel_array[i] + 0.587* img->pixel_array[i+1] + 0.299*img->pixel_array[i+2]);
@@ -223,21 +223,14 @@ void createGrayscale(IMAGE *img) {
     new.width = img->width;
     new.height = img->height;
     new.bbp = img->bbp;
-//    new.pixel_array = img->pixel_array;
     new.pixel_array = new_pixel_array;
     // Save file
-//    INFO_HEADER *inf_point = &img->info_head;
-//    FILE_HEADER *file_point = &img->file_head;
     FILE *file = fopen("grayscaled.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
-//    fwrite(file_point, sizeof(FILE_HEADER), 1, file);
-//    fwrite(inf_point, sizeof(INFO_HEADER), 1, file);
-//    fwrite(&img->pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
 }
-
 
 int getBit(char *m, int n){
     if(n>=0 && n<=8*strlen(m)) {
@@ -250,6 +243,8 @@ int getBit(char *m, int n){
     return 0;
 }
 
+
+
 int main(){
     //01100011 01100001 01101110
     for (int i = 0; i < 24; ++i) {
@@ -257,6 +252,8 @@ int main(){
         printf("%d",getBit("can", i));
     }
 
+    //IMAGE *test =  load_bmp("tux-pirate.bmp");
+    //stringToImage( test,"poem.txt");
     //IMAGE *test1 =  load_bmp("4x3.bmp");
    // print_information(test1);
     //IMAGE *test2 =  load_bmp("image2.bmp");
