@@ -1,15 +1,14 @@
 #include "bmp.h"
 
-
+//file header info
+FILE_HEADER f_header;
+INFO_HEADER inf_header;
 
 void print_col(Color *c){
     printf("R=%x,G=%x,B=%x\n",c->r,c->g,c->b);
 }
 
 IMAGE* load_bmp(const char *file_name) {
-    //file header info
-    FILE_HEADER f_header;
-    INFO_HEADER inf_header;
     IMAGE *img;
     img = malloc(sizeof(IMAGE));
 
@@ -24,59 +23,43 @@ IMAGE* load_bmp(const char *file_name) {
         printf("error opening file");
         return NULL;
     }
-
-    fread(&f_header.ident, sizeof(f_header.ident), 1, fp);
-    fread(&f_header.file_size, sizeof(f_header.file_size), 1, fp);
-//    printf("file size is: %d\n",f_header.file_size);
-    fread(&f_header.reserve_1, sizeof(f_header.reserve_1), 1, fp);
-//    printf("reserve1 is: %d\n",f_header.reserve_1);
-    fread(&f_header.reserve_2, sizeof(f_header.reserve_2), 1, fp);
-//    printf("reserve1 is: %d\n",f_header.reserve_2);
-    fread(&f_header.pix_array_offset, sizeof(f_header.pix_array_offset), 1, fp);
-//    printf("array offset is: %d\n",f_header.pix_array_offset);
     //read file headers
-//    fread (&f_header, sizeof(FILE_HEADER), 1, fp);
-//    if (f_header.ident != 0x4d42) {
-//        printf("Invalid BMP file header");
-//        return NULL;
-//    }
-//    fread (&inf_header, sizeof(INFO_HEADER), 1, fp);
-    fread(&inf_header.size, sizeof(inf_header.size), 1, fp);
-    fread(&inf_header.width, sizeof(inf_header.width), 1, fp);
-    fread(&inf_header.height, sizeof(inf_header.height), 1, fp);
-    fread(&inf_header.colour_plain, sizeof(inf_header.colour_plain), 1, fp);
-    fread(&inf_header.bbp, sizeof(inf_header.bbp), 1, fp);
-    fread(&inf_header.compression_method, sizeof(inf_header.compression_method), 1, fp);
-    fread(&inf_header.img_size, sizeof(inf_header.img_size), 1, fp);
-    fread(&inf_header.horizontal_res, sizeof(inf_header.horizontal_res), 1, fp);
-    fread(&inf_header.vertical_res, sizeof(inf_header.vertical_res), 1, fp);
-    fread(&inf_header.num_colours, sizeof(inf_header.num_colours), 1, fp);
-    fread(&inf_header.important_colours, sizeof(inf_header.important_colours), 1, fp);
+    fread (&f_header, sizeof(FILE_HEADER), 1, fp);
+    if (f_header.ident[0] != 'B' && f_header.ident[1] != 'M') {
+        printf("Invalid BMP file header");
+        return NULL;
+    }
+    fread (&inf_header, sizeof(INFO_HEADER), 1, fp);
     fclose(fp);
 
-
+    // Convert file header info to appropriate types
+    uint32_t *pix_array_offset = &f_header.pix_array_offset;
+    uint32_t *img_width = &inf_header.width;
+    uint32_t *img_height = &inf_header.height;
+    uint32_t *img_size = &inf_header.img_size;
+    uint16_t *bbp = &inf_header.bbp;
 
     //24bit pixels only (bytes)
-    unsigned int row_size = (inf_header.bbp / 8) * inf_header.width;
+    unsigned int row_size = (*bbp / 8) * *img_width;
 
     //padding size (bytes)
-    int padding = inf_header.width % 4;
+    unsigned int padding = *img_width % 4;
 
     //populate image struct
     img->padding = padding;
     img->row_length = row_size;
-    img->width = inf_header.width;
-    img->height = inf_header.height;
-    img->pixel_array_size = inf_header.img_size;
-    img->bbp = inf_header.bbp;
+    img->width = *img_width;
+    img->height = *img_height;
+    img->pixel_array_size = *img_size;
+    img->bbp = *bbp;
 
     //allocate the pixel buffer
-    img->pixel_array = malloc(inf_header.img_size);
+    img->pixel_array = malloc(*img_size);
 
     //get pixel data from file and copy it into the buffer
     fp = fopen(file_name,"rb");
-    fseek(fp,f_header.pix_array_offset,SEEK_SET);
-    fread (img->pixel_array, inf_header.img_size, 1, fp);
+    fseek(fp,pix_array_offset[0],SEEK_SET);
+    fread (img->pixel_array, *img_size, 1, fp);
     fclose(fp);
 
 //    //convert the pixel array in-place from bgr colour space to rgb color space
@@ -88,8 +71,8 @@ IMAGE* load_bmp(const char *file_name) {
     if (img->bbp > 24){  //Warn user if they load an image with a higher than 24bit bbp.
         printf("You have loaded a bmp with a higher than 24bit colourdepth.\nSome things may not behave correctly.\n");
     }
-    img->file_head = f_header;
-    img->info_head = inf_header;
+    img->file_head = &f_header;
+    img->info_head = &inf_header;
     return img;
 }
 
@@ -97,49 +80,6 @@ IMAGE* load_bmp(const char *file_name) {
 void free_img(unsigned char *pixel_array, IMAGE *img) {
     free(pixel_array);
     free(img);
-}
-
-void print_information(IMAGE *img){
-    //BITMAP_FILE_HEADER
-    int BMbfSize = img->file_head.file_size;
-    int bfReserved1 = img->file_head.reserve_1;
-    int bfReserved2 = img->file_head.reserve_2;
-    int bfOffBits = img->file_head.pix_array_offset;
-
-    //BITMAP_INFO_HEADER
-    int biSize = img->info_head.size;
-    int biWidth = img->width;
-    int biHeight = img->height;
-    int biPlanes = img->info_head.colour_plain;
-    int biBitCount = img->info_head.bbp;
-    int biCompression = img->info_head.compression_method;
-    int biSizeImage = img->info_head.img_size;
-    int biXPelsPerMeter = img->info_head.horizontal_res;
-    int biYPelsPerMeter = img->info_head.vertical_res;
-    int biClrUsed = img->info_head.num_colours;
-    int biClrImportant = img->info_head.important_colours;
-
-    printf("BITMAP_FILE_HEADER\n");
-    printf("==================\n");
-    printf("bfType: BM\n");
-    printf("BMbfSize: %d\n", BMbfSize);
-    printf("bfReserved1: %d\n", bfReserved1);
-    printf("bfReserved2: %d\n", bfReserved2);
-    printf("bfOffBits: %d\n", bfOffBits);
-    printf("\nBITMAP_INFO_HEADER\n");
-    printf("==================\n");
-    printf("biSize: %d\n",biSize);
-    printf("biWidth: %d\n",biWidth);
-    printf("biHeight: %d\n",biHeight);
-    printf("biPlanes: %d\n",biPlanes);
-    printf("biBitCount: %d\n",biBitCount);
-    printf("biCompression: %d\n",biCompression);
-    printf("biSizeImage: %d\n",biSizeImage);
-    printf("biXPelsPerMeter: %d\n",biXPelsPerMeter);
-    printf("biYPelsPerMeter: %d\n",biYPelsPerMeter);
-    printf("biClrUsed: %d\n",biClrUsed);
-    printf("biClrImportant: %d\n",biClrImportant);
-    printf("\n***************************************************************************\n");
 }
 
 //print out pixel data to std out omitting padded bytes for debugging purposes
@@ -276,4 +216,3 @@ Color *get_pixel_color(IMAGE* image, int x, int y) {
     Color *p = &pixel_col;
     return p;
 }
-
