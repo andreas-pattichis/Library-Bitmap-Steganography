@@ -219,23 +219,23 @@ Color *get_pixel_color(IMAGE* image, int x, int y) {
 
 void print_information(IMAGE *img){
     //BITMAP_FILE_HEADER
-    int BMbfSize = img->file_head->file_size;
-    int bfReserved1 = img->file_head->reserve_1;
-    int bfReserved2 = img->file_head->reserve_2;
-    int bfOffBits = img->file_head->pix_array_offset;
+    int BMbfSize = *img->file_head->file_size;
+    int bfReserved1 = *img->file_head->reserve_1;
+    int bfReserved2 = *img->file_head->reserve_2;
+    int bfOffBits = *img->file_head->pix_array_offset;
 
     //BITMAP_INFO_HEADER
-    int biSize = img->info_head->size;
+    int biSize = *img->info_head->size;
     int biWidth = img->width;
     int biHeight = img->height;
-    int biPlanes = img->info_head->colour_plain;
-    int biBitCount = img->info_head->bbp;
-    int biCompression = img->info_head->compression_method;
-    int biSizeImage = img->info_head->img_size;
-    int biXPelsPerMeter = img->info_head->horizontal_res;
-    int biYPelsPerMeter = img->info_head->vertical_res;
-    int biClrUsed = img->info_head->num_colours;
-    int biClrImportant = img->info_head->important_colours;
+    int biPlanes = *img->info_head->colour_plain;
+    int biBitCount = *img->info_head->bbp;
+    int biCompression = *img->info_head->compression_method;
+    int biSizeImage = *img->info_head->img_size;
+    int biXPelsPerMeter = *img->info_head->horizontal_res;
+    int biYPelsPerMeter = *img->info_head->vertical_res;
+    int biClrUsed = *img->info_head->num_colours;
+    int biClrImportant = *img->info_head->important_colours;
 
     printf("BITMAP_FILE_HEADER\n");
     printf("==================\n");
