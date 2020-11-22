@@ -9,6 +9,21 @@ void waterproof(IMAGE *cover, IMAGE *secret,int proof_len){
     }
 }
 
+/*
+ * Open file. In case of error, print message and exit.
+ */
+FILE *open_file(const char *filename, const char *mode)
+{
+    FILE *fp = fopen(filename, mode);
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Could not open file %s", filename);
+
+        exit(EXIT_FAILURE);
+    }
+
+    return fp;
+}
 
 unsigned char calculate_mask(unsigned int proof_length){
     unsigned char mask = 0xff;
@@ -43,22 +58,10 @@ void print_new_pixel_array(const unsigned char *arr,int arr_size,int r_len,int p
 }
 
 void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
-    IMAGE *new;
-    INFO_HEADER *new_inf = cover->info_head;
-    FILE_HEADER *new_file = cover->file_head;
-    new->info_head = new_inf;
-    new->file_head = new_file;
-    IMAGE *newp = &new;
-    new->padding = cover->padding;
-    new->row_length = cover->row_length;
-    new->pixel_array_size = cover->pixel_array_size;
-    new->width = cover->width;
-    new->height = cover->height;
-    new->bbp = cover->bbp;
-//    print_information(newp);
     unsigned char *new_pixel_array = malloc(cover->pixel_array_size);
     int new_padding = cover->padding;
     int new_arr_length = cover->pixel_array_size;
+    printf ("new length is: %d\n",new_arr_length);
     int new_row_length = cover->row_length;
     memcpy(new_pixel_array,cover->pixel_array,new_arr_length);
     unsigned char rc,gc,bc,rs,gs,bs,rn,gn,bn;
@@ -96,22 +99,25 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
 //        printf("Secret red is: %x \t\t\t\t\t",rs);
         rn = (rs >> (8-proof_len)) | (rc & calculate_mask(proof_len));
 //        printf("New red is: %x\n",rn);
-        new_pixel_array[i] = rn;
+        new_pixel_array[i] = gn;
 
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
 
-    FILE_HEADER *file_point = &cover->file_head;
-    INFO_HEADER *inf_point = &cover->info_head;
-    new->pixel_array = new_pixel_array;
-    print_pixel_array(newp);
+    IMAGE new;
+    new.padding = cover->padding;
+    new.row_length = cover->row_length;
+    new.pixel_array_size = cover->pixel_array_size;
+    new.width = cover->width;
+    new.height = cover->height;
+    new.bbp = cover->bbp;
+    new.pixel_array = new_pixel_array;
     // Save file
     FILE *file = fopen("file_name.bmp", "wb");
-    fwrite(&cover->file_head, sizeof(FILE_HEADER), 1, file);
-    fwrite(&cover->info_head, sizeof(INFO_HEADER), 1, file);
-//    fwrite(&cover->pixel_array[0], 1, new->pixel_array_size, file);
-    fwrite(&new_pixel_array, new->pixel_array_size, 1, file);
+    fwrite(cover->file_head, sizeof(FILE_HEADER), 1, file);
+    fwrite(cover->info_head, sizeof(INFO_HEADER), 1, file);
+    fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
 
 
@@ -123,7 +129,7 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
 void decode_image(IMAGE *img,unsigned int proof_len){
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     int new_arr_length = img->pixel_array_size;
- //   memcpy(new_pixel_array,img->pixel_array,new_arr_length);
+    //   memcpy(new_pixel_array,img->pixel_array,new_arr_length);
     unsigned char r,g,b;
     int i;
     int row_pos = 0;
@@ -168,28 +174,69 @@ void decode_image(IMAGE *img,unsigned int proof_len){
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
     // Save file
-    INFO_HEADER *inf_point = &img->info_head;
-    FILE_HEADER *file_point = &img->file_head;
     FILE *file = fopen("decoded.bmp", "wb");
-    fwrite(file_point, sizeof(FILE_HEADER), 1, file);
-    fwrite(inf_point, sizeof(INFO_HEADER), 1, file);
+    fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
+    fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
 }
 
+void createGrayscale(IMAGE *img) {
+
+    int i;
+    int row_pos = 0;
+    //Loop through the whole pixel array
+    for (i = 0; i < img->pixel_array_size-3-3; i++) {
+        //print a new line after each row of pixels
+        // skip the loop count ahead of the padded bytes
+        if (row_pos == img->row_length/3) {
+            printf("\n");
+            row_pos = 0; 			    //reset the row count.
+            i = i + img->padding - 1; 	        //skip padding, minus 1 because
+            continue;   			    //for condition will add 1 to i;
+        }
+
+        //Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
+        int sum = img->pixel_array[i] << 1;                             // Blue
+        sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
+        sum += img->pixel_array[i+2];                                   // Red
+        img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        img->pixel_array[i] = (unsigned char)(sum >> 3);
+        //advance the position we are in the row, so we know when we can skip the padding bytes
+        row_pos++;
+    }
+    IMAGE new;
+    new.padding = img->padding;
+    new.row_length = img->row_length;
+    new.pixel_array_size = img->pixel_array_size;
+    new.width = img->width;
+    new.height = img->height;
+    new.bbp = img->bbp;
+    new.pixel_array = img->pixel_array;
+    // Save file
+    INFO_HEADER *inf_point = &img->info_head;
+    FILE_HEADER *file_point = &img->file_head;
+    FILE *file = fopen("grayscaled.bmp", "wb");
+    fwrite(file_point, sizeof(FILE_HEADER), 1, file);
+    fwrite(inf_point, sizeof(INFO_HEADER), 1, file);
+    fwrite(&img->pixel_array[0], 1, new.pixel_array_size, file);
+    fclose(file);
+}
 
 int main(){
-//    IMAGE *test1 =  load_bmp("4x3.bmp");
-//    print_information(test1);
-//    IMAGE *test2 =  load_bmp("image2.bmp");
-//    print_information(test2);
-//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-    IMAGE *cover =  load_bmp("4x3.bmp");
-    IMAGE *secret =  load_bmp("4x3.bmp");
+    //IMAGE *test1 =  load_bmp("4x3.bmp");
+    //print_information(test1);
+    //IMAGE *test2 =  load_bmp("image2.bmp");
+    //print_information(test2);
+
+    IMAGE *test1 =  load_bmp("image1.bmp");
+    createGrayscale(test1);
+    IMAGE *cover =  load_bmp("IMG_6865.bmp");
+    IMAGE *secret =  load_bmp("IMG_6875.bmp");
     change_pixels(cover,secret,4);
-//    IMAGE *coded = load_bmp("file_name.bmp");
-//    decode_image(coded,4);
+    IMAGE *coded = load_bmp("file_name.bmp");
+    decode_image(coded,4);
 //    IMAGE *cover =  load_bmp("4x3.bmp");
 //    IMAGE *secret =  load_bmp("4x3.bmp");
     return 0;

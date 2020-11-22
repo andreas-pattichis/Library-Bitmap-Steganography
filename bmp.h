@@ -13,37 +13,36 @@ typedef struct {
  * Struct that represents the BitMap File Header of the image
  */
 typedef struct {
-    uint16_t  ident;             // Magic identifier: 0x4d42
-    uint32_t  file_size;             // File size in bytes
-    uint16_t  reserve_1;        // Not used
-    uint16_t  reserve_2;        // Not used
-    uint32_t  pix_array_offset;           // Offset to image data in bytes from beginning of file (54 bytes)
+    char ident[2];      // bfType: Will declare if the image is a .bmp file
+    char file_size[4];  // bfSize: Specifies the size of the file (including padding) in bytes
+    char reserve_1[2];  // Usually set to zero
+    char reserve_2[2];  // Usually set to zero
+    char pix_array_offset[4]; // bfOffBits: Specifies the offset from the beginning of the file to the bitmap data
 } FILE_HEADER;
 
 /**
  * Struct that represents the BitMap Info Header of the image
  */
 typedef struct {
-
-    uint32_t  size;  // DIB Header size in bytes (40 bytes)
-    int32_t   width;         // Width of the image
-    int32_t   height;        // Height of image
-    uint16_t  colour_plain;       // Number of color planes
-    uint16_t  bbp;   // Bits per pixel
-    uint32_t  compression_method;      // Compression type
-    uint32_t  img_size; // Image size in bytes
-    int32_t   horizontal_res; // Pixels per meter
-    int32_t   vertical_res; // Pixels per meter
-    uint32_t  num_colours;       // Number of colors
-    uint32_t  important_colours; // Important colors
+    char size[4]; // biSize: Specifies the size of the BITMAPINFOHEADER structure, in bytes
+    char width[4]; // biWidth: Specifies the width of the image, in pixels.
+    char height[4]; // biHeight: Specifies the height of the image, in pixels.
+    char colour_plain[2];
+    char bbp[2]; // biBitCount: colour depth (number of bits per pixel)
+    char compression_method[4]; // biCompression: Specifies the type of compression
+    char img_size[4]; 	//biSizeImage: raw bitmap size (size of image data)
+    char horizontal_res[4];
+    char vertical_res[4];
+    char num_colours[4]; 		//colours in colour pallet
+    char important_colours[4];
 } INFO_HEADER;
 
 /**
  * Struct to hold all necessary image data
  */
 typedef struct{
-    INFO_HEADER *info_head;
     FILE_HEADER *file_head;
+    INFO_HEADER *info_head;
     unsigned char *pixel_array;
     int padding;
     int pixel_array_size;
@@ -96,6 +95,7 @@ char* my_substring(const char *string,int position, int length);
 int get_offset_in_data(int x, int y, int img_w, int img_h);
 
 Color *get_pixel_color(IMAGE* image, int x, int y);
+
 
 /**
  * Prints a list displaying all the information of the BMP Image
