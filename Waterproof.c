@@ -243,7 +243,117 @@ int getBit(char *m, int n){
     return 0;
 }
 
+void stringToImage(IMAGE *img, char *textFile){
+    int bits[img->height * img->width];
+    char text[img->height * img->width];
+    //1
+    FILE *filePointer;
+    char ch;
+    //2
+    filePointer = fopen(textFile, "r");
+    //3
+    if (filePointer == NULL)
+    {
+        printf("File is not available \n");
+    }
+    else {
+        //4
+        int cnt = 0;
+        while ((ch = fgetc(filePointer)) != EOF) {
+            if (cnt < img->height * img->width) {
+                printf("%c", ch);
+                text[cnt] = ch;
+                cnt++;
+            }
+        }
 
+        printf("\n");
+        for (int k = 0; k < img->height * img->width; k++) {
+            bits[k] = 128 * getBit(text, img->height * (k / img->height) + (k % img->width));
+            printf("%d\t", bits[k]);
+
+        }
+        unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
+        int i;
+        int row_pos = 0;
+        //Loop through the whole pixel array
+        for (i = 0; i < img->pixel_array_size-3; i++) {
+            //print a new line after each row of pixels
+            // skip the loop count ahead of the padded bytes
+            if (row_pos == img->row_length/3) {
+                printf("\n");
+                row_pos = 0; 			    //reset the row count.
+                i = i + img->padding - 1; 	        //skip padding, minus 1 because
+                continue;   			    //for condition will add 1 to i;
+            }
+
+        // Luminance = (2 * Red + 5 * Green + 1 * Blue) / 8
+        // int sum = img->pixel_array[i] << 1;                             // Blue
+        // sum += img->pixel_array[i+1] << 2 + img->pixel_array[i+1];      // Green
+        // sum += img->pixel_array[i+2];                                   // Red
+        // [i++] =  (unsigned char)(sum >> 3);
+        // new_pixel_array[i++] =  (unsigned char)(sum >> 3);
+        // new_pixel_array[i+] =  (unsigned char)(sum >> 3);
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i++] = (unsigned char)(sum >> 3);
+        // img->pixel_array[i] = (unsigned char)(sum >> 3);
+
+
+        if(bits[i/3]==128){
+            new_pixel_array[i++] = (unsigned char)(255 );
+            new_pixel_array[i++] = (unsigned char)(255 );
+            new_pixel_array[i] = (unsigned char)(255 );
+        }
+        else{
+            new_pixel_array[i++] = (unsigned char)(0 );
+            new_pixel_array[i++] = (unsigned char)(0 );
+            new_pixel_array[i] = (unsigned char)(0 );
+        }
+
+
+        //advance the position we are in the row, so we know when we can skip the padding bytes
+        row_pos++;
+    }
+    IMAGE new;
+    new.padding = img->padding;
+        new.row_length = img->row_length;
+        new.pixel_array_size = img->pixel_array_size;
+        new.width = img->width;
+        new.height = img->height;
+        new.bbp = img->bbp;
+        new.pixel_array = new_pixel_array;
+        // Save file
+        FILE *file = fopen("zitima7.bmp", "wb");
+        fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
+        fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
+        fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
+        fclose(file);
+    }
+    //5
+    fclose(filePointer);
+
+
+/*
+    unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
+
+    IMAGE new;
+    new.padding = img->padding;
+    new.row_length = img->row_length;
+    new.pixel_array_size = img->pixel_array_size;
+    new.width = img->width;
+    new.height = img->height;
+    new.bbp = img->bbp;
+    new.pixel_array = new_pixel_array;
+    // Save file
+    FILE *file = fopen("stringToImage.bmp", "wb");
+    fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
+    fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
+    fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
+    fclose(file);
+
+    return EXIT_SUCCESS;
+    */
+}
 
 int main(){
     //01100011 01100001 01101110
@@ -252,8 +362,8 @@ int main(){
         printf("%d",getBit("can", i));
     }
 
-    //IMAGE *test =  load_bmp("tux-pirate.bmp");
-    //stringToImage( test,"poem.txt");
+    IMAGE *test =  load_bmp("tux-pirate.bmp");
+    stringToImage( test,"poem.txt");
     //IMAGE *test1 =  load_bmp("4x3.bmp");
    // print_information(test1);
     //IMAGE *test2 =  load_bmp("image2.bmp");
