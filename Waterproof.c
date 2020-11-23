@@ -357,8 +357,6 @@ void createGrayscale(IMAGE *img) {
     fclose(file);
 }
 
-
-
 void stringToImage(IMAGE *img, char *textFile){
     char text[img->height * img->width];
 
@@ -453,37 +451,73 @@ void stringToImage(IMAGE *img, char *textFile){
     fclose(file);
 }
 
+void imageToString(IMAGE *img){
+    int i,k=0;
+    int row_pos = 0;
+    char ch="";
+    FILE *fout = fopen("zitima8.txt","a+");
 
+    //Loop through the whole pixel array
+    for (i = 0; i < img->pixel_array_size-3; i++) {
+        //print a new line after each row of pixels
+        // skip the loop count ahead of the padded bytes
+        if (row_pos == img->row_length/3) {
+            printf("\n");
+            row_pos = 0; 			    // reset the row count.
+            i = i + img->padding - 1; 	// skip padding, minus 1 because
+            //k++;
+            continue;   			    // for condition will add 1 to i;
+        }
+
+        if(k==8) {
+            k = 0;
+        }
+       if(img->pixel_array[i]== (unsigned char)128)
+            //(ch >> k) & 1;
+       //else
+           //(ch >> k) & 1;
+
+       i+=2;
+       if(k==7) {
+           fprintf(fout, "%c", ch);
+           ch = "";
+       }
+        k++;
+        //advance the position we are in the row, so we know when we can skip the padding bytes
+        row_pos++;
+    }
+    fclose(fout);
+}
 
 int main(){
-//    //01100011 01100001 01101110
-//    for (int i = 0; i < 24; ++i) {
-//        if(i%8==0)printf("\n");
-//        printf("%d",getBit("can", i));
-//    }
+    // 01100011 01100001 01101110
+    // for (int i = 0; i < 24; ++i) {
+        // if(i%8==0)printf("\n");
+    // printf("%d",getBit("can", i));
+    // }
 
     IMAGE *test1 =  load_bmp("tux-pirate.bmp");
     print_information(test1);
     IMAGE *image =  load_bmp("tux-pirate.bmp");
     stringToImage(image, "strFile.txt");
-   // putTextInPicture(image,text,69);
-   // IMAGE *with_text =  load_bmp("withEncodedText.bmp");
-   // char *decoded_text = decodeTextFromImage(with_text,285,69);
-   // printf("%s\n",decoded_text);
+    // putTextInPicture(image,text,69);
+    // IMAGE *with_text =  load_bmp("withEncodedText.bmp");
+    // char *decoded_text = decodeTextFromImage(with_text,285,69);
+    // printf("%s\n",decoded_text);
     //IMAGE *test =  load_bmp("tux-pirate.bmp");
-     //stringToImage( test,"poem.txt");
+    //stringToImage( test,"poem.txt");
 
     //IMAGE *test2 =  load_bmp("image2.bmp");
     //print_information(test2);
 
-   // IMAGE *test2 =  load_bmp("image1.bmp");
-   // createGrayscale(test2);
-//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-//    change_pixels(cover,secret,4);
-//    IMAGE *coded = load_bmp("file_name.bmp");
-//    decode_image(coded,4);
-//    IMAGE *cover =  load_bmp("4x3.bmp");
-//    IMAGE *secret =  load_bmp("4x3.bmp");
+    // IMAGE *test2 =  load_bmp("image1.bmp");
+    // createGrayscale(test2);
+    // IMAGE *cover =  load_bmp("IMG_6865.bmp");
+    // IMAGE *secret =  load_bmp("IMG_6875.bmp");
+    // change_pixels(cover,secret,4);
+    // IMAGE *coded = load_bmp("file_name.bmp");
+    // decode_image(coded,4);
+    // IMAGE *cover =  load_bmp("4x3.bmp");
+    // IMAGE *secret =  load_bmp("4x3.bmp");
     return 0;
 }
