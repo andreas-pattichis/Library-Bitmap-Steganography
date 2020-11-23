@@ -220,24 +220,38 @@ Color *get_pixel_color(IMAGE* image, int x, int y) {
 }
 
 void print_information(IMAGE *img){
+    int BMbfSize = 0,bfReserved1 = 0,bfReserved2 = 0,bfOffBits = 0,biSize = 0,biWidth = 0,biHeight = 0,biPlanes = 0,
+            biBitCount = 0,biCompression = 0,biSizeImage = 0,biXPelsPerMeter = 0,biYPelsPerMeter = 0,biClrUsed = 0,biClrImportant = 0;
+    for (int i = 0; i < 4; ++i) {
+        BMbfSize += img->file_head->file_size[i];
+        bfOffBits += img->file_head->pix_array_offset[i];
+        biSize += img->info_head->size[i];
+        biCompression += img->info_head->compression_method[i];
+        biSizeImage += img->info_head->img_size[i];
+        biXPelsPerMeter += img->info_head->horizontal_res[i];
+        biYPelsPerMeter += img->info_head->vertical_res[i];
+        biClrUsed += img->info_head->num_colours[i];
+        biClrImportant += img->info_head->important_colours[i];
+    }
+
+    biWidth = img->width;
+    biHeight = img->height;
+
+    for (int i = 0; i < 2; ++i) {
+        biPlanes += img->info_head->colour_plain[i];
+        biBitCount += img->info_head->bbp[i];
+        bfReserved1 += img->file_head->reserve_1[i];
+        bfReserved2 += img->file_head->reserve_2[i];
+    }
+
+
     //BITMAP_FILE_HEADER
-    int BMbfSize = *img->file_head->file_size;
-    int bfReserved1 = *img->file_head->reserve_1;
-    int bfReserved2 = *img->file_head->reserve_2;
-    int bfOffBits = *img->file_head->pix_array_offset;
+
+
+
 
     //BITMAP_INFO_HEADER
-    int biSize = *img->info_head->size;
-    int biWidth = img->width;
-    int biHeight = img->height;
-    int biPlanes = *img->info_head->colour_plain;
-    int biBitCount = *img->info_head->bbp;
-    int biCompression = *img->info_head->compression_method;
-    int biSizeImage = *img->info_head->img_size;
-    int biXPelsPerMeter = *img->info_head->horizontal_res;
-    int biYPelsPerMeter = *img->info_head->vertical_res;
-    int biClrUsed = *img->info_head->num_colours;
-    int biClrImportant = *img->info_head->important_colours;
+
 
     printf("BITMAP_FILE_HEADER\n");
     printf("==================\n");
