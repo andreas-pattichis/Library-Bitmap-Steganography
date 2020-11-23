@@ -521,7 +521,43 @@ void stringToImage(IMAGE *img, char *textFile){
     fclose(file);
 }
 
+void imageToString(IMAGE *img){
+    int i,k=0;
+    int row_pos = 0;
+    char ch="";
+    FILE *fout = fopen("zitima8.txt","a+");
 
+    //Loop through the whole pixel array
+    for (i = 0; i < img->pixel_array_size-3; i++) {
+        //print a new line after each row of pixels
+        // skip the loop count ahead of the padded bytes
+        if (row_pos == img->row_length/3) {
+            printf("\n");
+            row_pos = 0; 			    // reset the row count.
+            i = i + img->padding - 1; 	// skip padding, minus 1 because
+            //k++;
+            continue;   			    // for condition will add 1 to i;
+        }
+
+        if(k==8) {
+            k = 0;
+        }
+       if(img->pixel_array[i]== (unsigned char)128)
+            //(ch >> k) & 1;
+       //else
+           //(ch >> k) & 1;
+
+       i+=2;
+       if(k==7) {
+           fprintf(fout, "%c", ch);
+           ch = "";
+       }
+        k++;
+        //advance the position we are in the row, so we know when we can skip the padding bytes
+        row_pos++;
+    }
+    fclose(fout);
+}
 
 int main(){
 //    //01100011 01100001 01101110
