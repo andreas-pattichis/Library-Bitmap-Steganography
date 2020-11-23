@@ -163,7 +163,7 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     while (c != '\0'){
         c = text[ii];
 
-        printf("%d [%c]\n",ii,c);
+        printf("%d [%c] -> %d\n",ii,c,c);
         ii++;
     }
 
@@ -175,11 +175,11 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     memcpy(new_pixel_array,img->pixel_array,img->pixel_array_size);
     int b,o,n = (1+strlen(text))*8,*permutations = createPermutationFunction(n,system_key);
-    printf("arr is: %d and len is %d\n",n,strlen(text));
+//    printf("arr is: %d and len is %d\n",n,strlen(text));
     for (int i = 0; i < (1+strlen(text))*8; i++) {
         b = getBit(text,i);
         o = permutations[i];
-//        printf("%d\n",o);
+        printf("%d\n",o);
         new_pixel_array[o] = new_pixel_array[o] & 254;
         new_pixel_array[o] = new_pixel_array[o] | b;
     }
@@ -223,12 +223,12 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
     char *text = calloc(textLen,sizeof(char));
     int counter = 7,text_counter = 0, character_sum = 0;
     int o = 0,n = (1+textLen)*8,*permutations = createPermutationFunction(n,system_key);
-    printf("arr is: %d and len is %d\n",n,textLen);
+//    printf("arr is: %d and len is %d\n",n,textLen);
 
     printf("\n\n\n------------------------------------\n\n\n");
     for (int i = 0; i < (1+textLen)*8; i++) {
         o = permutations[i];
-//        printf("%d\n",o);
+        printf("%d\n",o);
         int aa = img->pixel_array[o] & 1;
 //        printf("%d",aa);
         aa = aa * pow(2,counter);
@@ -236,7 +236,8 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
 
         if (counter == 0) {
 //            printf("\n");
-            text[text_counter] = character_sum +'0';
+            text[text_counter] = character_sum;
+
             text_counter++;
             character_sum = 0;
             counter = 7;
@@ -357,6 +358,73 @@ void createGrayscale(IMAGE *img) {
     fclose(file);
 }
 
+int infoEquals(const char *a, const char *b, int length){
+    for (int i = 0; i < length; ++i) {
+        if (a[i] != b[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int imageEquals(IMAGE *a,IMAGE *b){
+    int result = 0;
+    if (!infoEquals(a->file_head->file_size,b->file_head->file_size,4)){
+        return 0;
+    }
+    if (!infoEquals(a->file_head->pix_array_offset,b->file_head->pix_array_offset,4)){
+        return 0;
+    }
+    if (!infoEquals(a->file_head->reserve_2,b->file_head->reserve_2,2)){
+        return 0;
+    }
+    if (!infoEquals(a->file_head->reserve_1,b->file_head->reserve_1,2)){
+        return 0;
+    }
+    if (!infoEquals(a->file_head->ident,b->file_head->ident,2)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->img_size,b->info_head->img_size,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->height,b->info_head->height,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->width,b->info_head->width,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->important_colours,b->info_head->important_colours,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->num_colours,b->info_head->num_colours,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->vertical_res,b->info_head->vertical_res,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->horizontal_res,b->info_head->horizontal_res,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->size,b->info_head->size,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->compression_method,b->info_head->compression_method,4)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->bbp,b->info_head->bbp,2)){
+        return 0;
+    }
+    if (!infoEquals(a->info_head->colour_plain,b->info_head->colour_plain,2)){
+        return 0;
+    }
+    for (int i = 0; i < a->pixel_array_size; ++i) {
+        if (a->pixel_array[i] != b->pixel_array[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 
 void stringToImage(IMAGE *img, char *textFile){
@@ -368,8 +436,7 @@ void stringToImage(IMAGE *img, char *textFile){
     //2
     filePointer = fopen(textFile, "r");
     //3
-    if (filePointer == NULL)
-    {
+    if (filePointer == NULL){
         printf("File is not available \n");
     }
     else {
@@ -481,8 +548,12 @@ int main(){
     char *text = readTextFromFile("poem.txt");
     putTextInPicture(image,text,69);
     IMAGE *with_text =  load_bmp("withEncodedText.bmp");
-    char *decoded_text = decodeTextFromImage(with_text,285,69);
+    char *decoded_text = decodeTextFromImage(with_text,280,69);
     printf("%s\n",decoded_text);
+
+//    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
+//    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
+//   printf("Are pictures the same? %d\n",imageEquals(a,b));
 //    IMAGE *test =  load_bmp("tux-pirate.bmp");
 //    stringToImage( test,"poem.txt");
     //IMAGE *test1 =  load_bmp("4x3.bmp");
