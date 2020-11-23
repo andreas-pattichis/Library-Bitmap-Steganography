@@ -8,6 +8,8 @@ void print_col(Color *c){
     printf("R=%x,G=%x,B=%x\n",c->r,c->g,c->b);
 }
 
+
+
 IMAGE* load_bmp(const char *file_name) {
     IMAGE *img;
     img = malloc(sizeof(IMAGE));
