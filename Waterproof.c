@@ -529,7 +529,7 @@ void imageToString(IMAGE *img){
     FILE *fout = fopen("zitima8.txt","a+");
 
     //Loop through the whole pixel array
-    for (i = 0; i < img->pixel_array_size-3; i++) {
+    for (i = 0; i < img->pixel_array_size-3; i+=24) {
         //print a new line after each row of pixels
         // skip the loop count ahead of the padded bytes
         if (row_pos == img->row_length/3) {
