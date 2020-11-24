@@ -1,3 +1,4 @@
+/*
 #ifndef HOMEWORK4_DECODETEXT_H
 #define HOMEWORK4_DECODETEXT_H
 
@@ -12,13 +13,14 @@
  * @return
  */
 int getBit(char *m, int n);
-
+/*
 /**
  *
  * @param n
  * @param system_key
  * @return
  */
+/*
 int *createPermutationFunction(int n, unsigned int system_key);
 
 /**
@@ -28,6 +30,8 @@ int *createPermutationFunction(int n, unsigned int system_key);
  * @param system_key
  * @return
  */
+/*
 char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key);
 
 #endif //HOMEWORK4_DECODETEXT_H
+*/

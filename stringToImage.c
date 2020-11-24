@@ -1,3 +1,4 @@
+/*
 #include "stringToImage.h"
 
 int getBit(char *m, int n){
@@ -50,13 +51,13 @@ void stringToImage(IMAGE *img, char *textFile){
         printf("%c",text[i]);
     printf("\n");
     */
-
+/*
     int bits[cnt*8+1];
 
     for(i=0;i<=cnt*8;i++){
         bits[i] = 128 * getBit(text, img->height * (i / img->height) + (i % img->width));
         /* TESTING TO SEE IF THE BITS HAVE BEEN
-        //printf("%d\t",bits[i]);*/
+        //printf("%d\t",bits[i]);*//*
     }
     int k=0;
 
@@ -103,4 +104,4 @@ void stringToImage(IMAGE *img, char *textFile){
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new->pixel_array_size, file);
     fclose(file);
-}
+}*/

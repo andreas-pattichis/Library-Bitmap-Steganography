@@ -1,3 +1,4 @@
+/*
 #ifndef HOMEWORK4_ENCODESTEGANO_H
 #define HOMEWORK4_ENCODESTEGANO_H
 
@@ -11,7 +12,7 @@
  * @param cover
  * @param secret
  * @param proof_len
- */
+ *//*
 void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len);
 
 /**
@@ -19,7 +20,8 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len);
  *
  * @param proof_length
  * @return
- */
+ *//*
 unsigned char calculate_mask(unsigned int proof_length);
 
 #endif //HOMEWORK4_ENCODESTEGANO_H
+*/

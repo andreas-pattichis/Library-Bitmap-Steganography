@@ -1,3 +1,4 @@
+/*
 #include "stringToImage.h"
 
 int getBit(char *m, int n){
@@ -44,4 +45,4 @@ void imageToString(IMAGE *img){
         row_pos++;
     }
     fclose(fout);
-}
+}*/

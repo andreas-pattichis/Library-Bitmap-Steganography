@@ -1,4 +1,4 @@
-#include "decodeText.h"
+/*#include "decodeText.h"
 
 int getBit(char *m, int n){
     if(n>=0 && n<=8*strlen(m)) {
@@ -50,4 +50,4 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
         else counter--;
     }
     return text;
-}
+}*/

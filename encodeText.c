@@ -1,3 +1,4 @@
+/*
 #include "encodeText.h"
 
 int getBit(char *m, int n){
@@ -56,4 +57,4 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
-}
+}*/
