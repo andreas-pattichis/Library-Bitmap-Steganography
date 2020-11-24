@@ -663,12 +663,12 @@ int main(){
 //    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
 //    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
 //   printf("Are pictures the same? %d\n",imageEquals(a,b));
-//    IMAGE *test =  load_bmp("tux-pirate.bmp");
-//    stringToImage( test,"poem.txt");
-    IMAGE *test1 =  load_bmp("4x3.bmp");
-    print_information(test1);
-    IMAGE *test2 =  load_bmp("image2.bmp");
-    print_information(test2);
+     IMAGE *test =  load_bmp("tux-pirate.bmp");
+    stringToImage( test,"poem.txt");
+   // IMAGE *test1 =  load_bmp("4x3.bmp");
+   // print_information(test1);
+   // IMAGE *test2 =  load_bmp("image2.bmp");
+    //print_information(test2);
 //    char as[2] = {'\022', '\v'};
 //    int s = convert_to_anInteger(as,2);
 //    printf("d -> %d",s);
