@@ -683,47 +683,45 @@ void imageToString(IMAGE *img){
 }
 
 int main(){
-//    //01100011 01100001 01101110
-//    for (int i = 0; i < 24; ++i) {
-//        if(i%8==0)printf("\n");
-//        printf("%d",getBit("can", i));
-//    }
 
-//    IMAGE *image =  load_bmp("tux-bonaparte.bmp");
-//    char *text = readTextFromFile("poem.txt");
-//    putTextInPicture(image,text,69);
-//    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
-//    char *decoded_text = decodeTextFromImage(with_text,280,69);
-//    printf("%s\n",decoded_text);
+    // LEITOURGIA 1: -LIST
+    IMAGE *test11 =  load_bmp("4x3.bmp");
+    print_information(test11);
 
-//    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
-//    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
-//   printf("Are pictures the same? %d\n",imageEquals(a,b));
-     IMAGE *test =  load_bmp("tux-pirate.bmp");
-     stringToImage( test,"strFile.txt");
-     IMAGE *after =  load_bmp("zitima7.bmp");
-     imageToString(after);
-   // IMAGE *test1 =  load_bmp("4x3.bmp");
-   // print_information(test1);
-   // IMAGE *test2 =  load_bmp("image2.bmp");
-    //print_information(test2);
-//    char as[2] = {'\022', '\v'};
-//    int s = convert_to_anInteger(as,2);
-//    printf("d -> %d",s);
-   // IMAGE *test2 =  load_bmp("image1.bmp");
-   // createGrayscale(test2);
-//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-//    change_pixels(cover,secret,4);
-//    IMAGE *coded = load_bmp("file_name.bmp");
-//    decode_image(coded,4);
-//    IMAGE *cover =  load_bmp("4x3.bmp");
-//    IMAGE *secret =  load_bmp("4x3.bmp");
+    IMAGE *test12 =  load_bmp("image2.bmp");
+    print_information(test12);
 
-//    IMAGE *test =  load_bmp("tux-pirate.bmp");
-//    stringToImage( test,"strFile.txt");
-//    IMAGE *test2 =  load_bmp("zitima7.bmp");
-//    imageToString(test2);
+    // LEITOURGIA 2: -GREAYSCALE
+    IMAGE *test21 =  load_bmp("image1.bmp");
+    createGrayscale(test21);
+    //IMAGE *test22 =  load_bmp("image2.bmp");
+    //createGrayscale(test22);
 
+    // LEITOURGIA 3: -ENCODESTEGANO
+    IMAGE *cover =  load_bmp("IMG_6865.bmp");
+    IMAGE *secret =  load_bmp("IMG_6875.bmp");
+    change_pixels(cover,secret,4);
+
+    // LEITOURGIA 4: -DECODESTEGANO
+    IMAGE *coded = load_bmp("file_name.bmp");
+    decode_image(coded,4);
+
+    // LEITOURGIA 5: -ENCODETEXT
+    IMAGE *test5 =  load_bmp("tux-bonaparte.bmp");
+    char *text = readTextFromFile("poem.txt");
+    putTextInPicture(test5,text,69);
+
+    // LEITOURGIA 6: -DECODETEXT
+    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
+    char *decoded_text = decodeTextFromImage(with_text,280,69);
+    printf("%s\n",decoded_text);
+
+    // LEITOURGIA 7: -STRINGTOIMAGE
+    IMAGE *test7 =  load_bmp("tux-pirate.bmp");
+    stringToImage( test7,"strFile.txt");
+
+    // LEITOURGIA 8: -IMAGETOSTRING
+    IMAGE *test8 =  load_bmp("zitima7.bmp");
+    imageToString(test8);
     return 0;
 }
