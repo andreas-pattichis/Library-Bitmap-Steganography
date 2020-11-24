@@ -517,12 +517,12 @@ void print_information(IMAGE *img){
 }
 
 
-void stringToImage(IMAGE *img, char *textFile){
-    char text[img->height * img->width];
+void stringToImage(IMAGE *img, char *textFileName){
+    char text[(img->height * img->width)/*/8*/];    // why
 
     FILE *filePointer;
 
-    filePointer = fopen(textFile, "r");
+    filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
@@ -534,9 +534,10 @@ void stringToImage(IMAGE *img, char *textFile){
             cnt++;
         }
     }
+    // cnt is how many characters we can put into the image
     fclose(filePointer);
 
-    filePointer = fopen(textFile, "r");
+    filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
@@ -547,7 +548,8 @@ void stringToImage(IMAGE *img, char *textFile){
         ch = fgetc(filePointer);
         text[i] = ch;
         i++;
-        }
+    }
+    // now we have put our text in the array
     fclose(filePointer);
 
     /* CHECKING IF THE FILE HAS BEEN READ CORRECTLY
