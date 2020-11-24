@@ -1,9 +1,6 @@
 #ifndef HOMEWORK4_GRAYSCALE_H
 #define HOMEWORK4_GRAYSCALE_H
 
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "bmp.h"
 
 
