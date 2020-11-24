@@ -1,5 +1,5 @@
 #include "bmp.h"
-#include <math.h>
+
 #include <string.h>
 
 #define MAX_WORDS 5000
@@ -438,6 +438,85 @@ int imageEquals(IMAGE *a,IMAGE *b){
 
 
 
+
+int convert_to_anInteger(char *arr, int arrLen){
+    int sum = 0,power = arrLen*8 - 1,to_and,which = 0,pos = 7,t,add;
+    // reverse the arr because of little endian
+    if (arrLen == 2){
+        t = arr[0];
+        arr[0] = arr[1];
+        arr[1] = t;
+    }
+    else {
+        t = arr[0];
+        arr[0] = arr[3];
+        arr[3] = t;
+        t = arr[1];
+        arr[1] = arr[2];
+        arr[2] = t;
+    }
+    while (1){
+        to_and = arr[which] & (int) pow(2,pos);
+        if (to_and != 0 )
+            to_and = 1;
+        add = to_and * pow(2,power);
+//        printf("adding : %d (%d * %d^%d)  Which is : %d  Pos is: %d\n",add,to_and,2,power,which,pos);
+        sum += add;
+        if (pos % 8 == 0){
+            pos = 8;
+            which++;
+        }
+        pos--;
+        power--;
+        if (which == arrLen){
+            break;
+        }
+    }
+    return sum;
+}
+
+void print_information(IMAGE *img){
+
+    int BMbfSize = convert_to_anInteger(img->file_head->file_size,4);
+    int bfReserved1 = convert_to_anInteger(img->file_head->reserve_1,2);
+    int bfReserved2 = convert_to_anInteger(img->file_head->reserve_2,2);
+    int bfOffBits = convert_to_anInteger(img->file_head->pix_array_offset,4);
+    int biSize = convert_to_anInteger(img->info_head->size,4);
+    int biWidth = convert_to_anInteger(img->info_head->width,4);
+    int biHeight = convert_to_anInteger(img->info_head->height,4);
+    int biPlanes = convert_to_anInteger(img->info_head->colour_plain,2);
+    int biBitCount = convert_to_anInteger(img->info_head->bbp,2);
+    int biCompression = convert_to_anInteger(img->info_head->compression_method,4);
+    int biSizeImage = convert_to_anInteger(img->info_head->img_size,4);
+    int biXPelsPerMeter = convert_to_anInteger(img->info_head->horizontal_res,4);
+    int biYPelsPerMeter = convert_to_anInteger(img->info_head->vertical_res,4);
+    int biClrUsed = convert_to_anInteger(img->info_head->num_colours,4);
+    int biClrImportant = convert_to_anInteger(img->info_head->important_colours,4);
+
+    printf("BITMAP_FILE_HEADER\n");
+    printf("==================\n");
+    printf("bfType: BM\n");
+    printf("BMbfSize: %d\n", BMbfSize);
+    printf("bfReserved1: %d\n", bfReserved1);
+    printf("bfReserved2: %d\n", bfReserved2);
+    printf("bfOffBits: %d\n", bfOffBits);
+    printf("\nBITMAP_INFO_HEADER\n");
+    printf("==================\n");
+    printf("biSize: %d\n",biSize);
+    printf("biWidth: %d\n",biWidth);
+    printf("biHeight: %d\n",biHeight);
+    printf("biPlanes: %d\n",biPlanes);
+    printf("biBitCount: %d\n",biBitCount);
+    printf("biCompression: %d\n",biCompression);
+    printf("biSizeImage: %d\n",biSizeImage);
+    printf("biXPelsPerMeter: %d\n",biXPelsPerMeter);
+    printf("biYPelsPerMeter: %d\n",biYPelsPerMeter);
+    printf("biClrUsed: %d\n",biClrUsed);
+    printf("biClrImportant: %d\n",biClrImportant);
+    printf("\n***************************************************************************\n");
+}
+
+
 void stringToImage(IMAGE *img, char *textFile){
     char text[img->height * img->width];
 
@@ -574,23 +653,25 @@ int main(){
 //        printf("%d",getBit("can", i));
 //    }
 
-    IMAGE *image =  load_bmp("tux-bonaparte.bmp");
-    char *text = readTextFromFile("poem.txt");
-    putTextInPicture(image,text,69);
-    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
-    char *decoded_text = decodeTextFromImage(with_text,280,69);
-    printf("%s\n",decoded_text);
+//    IMAGE *image =  load_bmp("tux-bonaparte.bmp");
+//    char *text = readTextFromFile("poem.txt");
+//    putTextInPicture(image,text,69);
+//    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
+//    char *decoded_text = decodeTextFromImage(with_text,280,69);
+//    printf("%s\n",decoded_text);
 
 //    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
 //    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
 //   printf("Are pictures the same? %d\n",imageEquals(a,b));
 //    IMAGE *test =  load_bmp("tux-pirate.bmp");
 //    stringToImage( test,"poem.txt");
-//    IMAGE *test1 =  load_bmp("4x3.bmp");
-//    print_information(test1);
-//    IMAGE *test2 =  load_bmp("image2.bmp");
-//    print_information(test2);
-
+    IMAGE *test1 =  load_bmp("4x3.bmp");
+    print_information(test1);
+    IMAGE *test2 =  load_bmp("image2.bmp");
+    print_information(test2);
+//    char as[2] = {'\022', '\v'};
+//    int s = convert_to_anInteger(as,2);
+//    printf("d -> %d",s);
    // IMAGE *test2 =  load_bmp("image1.bmp");
    // createGrayscale(test2);
 //    IMAGE *cover =  load_bmp("IMG_6865.bmp");
@@ -601,10 +682,10 @@ int main(){
 //    IMAGE *cover =  load_bmp("4x3.bmp");
 //    IMAGE *secret =  load_bmp("4x3.bmp");
 
-    IMAGE *test =  load_bmp("tux-pirate.bmp");
-    stringToImage( test,"strFile.txt");
-    IMAGE *test2 =  load_bmp("zitima7.bmp");
-    imageToString(test2);
+//    IMAGE *test =  load_bmp("tux-pirate.bmp");
+//    stringToImage( test,"strFile.txt");
+//    IMAGE *test2 =  load_bmp("zitima7.bmp");
+//    imageToString(test2);
 
     return 0;
 }
