@@ -524,7 +524,8 @@ void stringToImage(IMAGE *img, char *textFile){
 void imageToString(IMAGE *img){
     int i,k=0;
     int row_pos = 0;
-    char ch="";
+    char ch;
+    int num1 = 0,num2 = 0,num3 = 0,num4 = 0,num5 = 0,num6 = 0,num7 = 0,num8 = 0;
     FILE *fout = fopen("zitima8.txt","a+");
 
     //Loop through the whole pixel array
@@ -539,21 +540,17 @@ void imageToString(IMAGE *img){
             continue;   			    // for condition will add 1 to i;
         }
 
-        if(k==8) {
-            k = 0;
-        }
-       if(img->pixel_array[i]== (unsigned char)128)
-            //(ch >> k) & 1;
-       //else
-           //(ch >> k) & 1;
+        num1 = img->pixel_array[i];
+        num2 = img->pixel_array[i+3]>>1;
+        num3 = img->pixel_array[i+6]>>2;
+        num4 = img->pixel_array[i+9]>>3;
+        num5 = img->pixel_array[i+12]>>4;
+        num6 = img->pixel_array[i+15]>>5;
+        num7 = img->pixel_array[i+18]>>6;
+        num8 = img->pixel_array[i+21]>>7;
 
-       i+=2;
-       if(k==7) {
-           fprintf(fout, "%c", ch);
-           ch = "";
-       }
-        k++;
-        //advance the position we are in the row, so we know when we can skip the padding bytes
+        ch =  num1+num2+num3+num4+num5+num6+num7+num8;
+        fprintf(fout,"%c",ch);
         row_pos++;
     }
     fclose(fout);
@@ -565,31 +562,9 @@ int main(){
 //        if(i%8==0)printf("\n");
 //        printf("%d",getBit("can", i));
 //    }
-//    IMAGE *image =  load_bmp("tux-bonaparte.bmp");
-//    char *text = readTextFromFile("poem.txt");
-//    putTextInPicture(image,text,69);
-//    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
-//    char *decoded_text = decodeTextFromImage(with_text,280,69);
-//    printf("%s\n",decoded_text);
-
-//    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
-//    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
-//   printf("Are pictures the same? %d\n",imageEquals(a,b));
-//    IMAGE *test =  load_bmp("tux-pirate.bmp");
-//    stringToImage( test,"poem.txt");
-    IMAGE *test1 =  load_bmp("4x3.bmp");
-    print_information(test1);
-    IMAGE *test2 =  load_bmp("image2.bmp");
-    print_information(test2);
-
-   // IMAGE *test2 =  load_bmp("image1.bmp");
-   // createGrayscale(test2);
-//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
-//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
-//    change_pixels(cover,secret,4);
-//    IMAGE *coded = load_bmp("file_name.bmp");
-//    decode_image(coded,4);
-//    IMAGE *cover =  load_bmp("4x3.bmp");
-//    IMAGE *secret =  load_bmp("4x3.bmp");
+    IMAGE *test =  load_bmp("tux-pirate.bmp");
+    stringToImage( test,"strFile.txt");
+    IMAGE *test2 =  load_bmp("zitima7.bmp");
+    imageToString(test2);
     return 0;
 }
