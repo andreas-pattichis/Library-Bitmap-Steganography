@@ -518,7 +518,7 @@ void print_information(IMAGE *img){
 
 
 void stringToImage(IMAGE *img, char *textFileName){
-    char text[(img->height * img->width)/*/8*/];    // why
+    char text[(img->height * img->width)/8];    // why
 
     FILE *filePointer;
 
@@ -552,19 +552,20 @@ void stringToImage(IMAGE *img, char *textFileName){
     // now we have put our text in the array
     fclose(filePointer);
 
-    /* CHECKING IF THE FILE HAS BEEN READ CORRECTLY
-    printf("\n\n%d\n\n",cnt);
-    for(i=0;i<=cnt;i++)
-        printf("%c",text[i]);
-    printf("\n");
-    */
+    // CHECKING IF THE FILE HAS BEEN READ CORRECTLY
+//    printf("\n\n%d\n\n",cnt);
+//    for(i=0;i<=cnt;i++)
+//        printf("%c",text[i]);
+//    printf("\n");
 
-    int bits[cnt*8+1];
 
-    for(i=0;i<=cnt*8;i++){
-        bits[i] = 128 * getBit(text, img->height * (i / img->height) + (i % img->width));
-        /* TESTING TO SEE IF THE BITS HAVE BEEN
-        //printf("%d\t",bits[i]);*/
+    int bits[cnt*8];
+    for(int ii=0;ii<cnt*8;ii++){
+        bits[ii] = 128 * getBit(text,ii /*img->height * (i / img->height) + (i % img->width)*/);
+
+        // TESTING TO SEE IF THE BITS HAVE BEEN
+       // printf("%d\t",bits[ii]);
+       //bits array is correct
     }
     int k=0;
 
@@ -596,6 +597,13 @@ void stringToImage(IMAGE *img, char *textFileName){
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
+//    for (int j = 0; j < 24; j+=3) {
+//        if (j % 8 == 0){
+//            printf("\n");
+//        }
+//        printf("new_pixel_array[%d] = %d\n",j,new_pixel_array[j]);
+//    }
+//pixel array is correct
     IMAGE *new = (IMAGE *)malloc(sizeof(IMAGE));
     new->padding = img->padding;
     new->row_length = img->row_length;
@@ -605,7 +613,7 @@ void stringToImage(IMAGE *img, char *textFileName){
     new->bbp = img->bbp;
     new->pixel_array = new_pixel_array;
     // Save file
-    reverse_pixel_array(new);
+//    reverse_pixel_array(new);
     FILE *file = fopen("zitima7.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
@@ -614,14 +622,24 @@ void stringToImage(IMAGE *img, char *textFileName){
 }
 
 void imageToString(IMAGE *img){
-    int i,k=0;
+//    for (int j = 0; j < 24; j+=3) {
+//        if (j % 8 == 0){
+//            printf("\n");
+//        }
+//        printf("new_pixel_array[%d] = %d\n",j,img->pixel_array[j]);
+//    }
+
+
+
+    int i,sum = 0;
     int row_pos = 0;
     char ch;
-    int num1 = 0,num2 = 0,num3 = 0,num4 = 0,num5 = 0,num6 = 0,num7 = 0,num8 = 0;
+    int num;
+//    int num1 = 0,num2 = 0,num3 = 0,num4 = 0,num5 = 0,num6 = 0,num7 = 0,num8 = 0;
     FILE *fout = fopen("zitima8.txt","a+");
 
     //Loop through the whole pixel array
-    for (i = 0; i < img->pixel_array_size-3; i++) {
+    for (i = 0; i < img->pixel_array_size-24; i+=24) {
         //print a new line after each row of pixels
         // skip the loop count ahead of the padded bytes
         if (row_pos == img->row_length/3) {
@@ -632,18 +650,31 @@ void imageToString(IMAGE *img){
             continue;   			    // for condition will add 1 to i;
         }
 
-        num1 = img->pixel_array[i];
-        num2 = img->pixel_array[i+3]>>1;
-        num3 = img->pixel_array[i+6]>>2;
-        num4 = img->pixel_array[i+9]>>3;
-        num5 = img->pixel_array[i+12]>>4;
-        num6 = img->pixel_array[i+15]>>5;
-        num7 = img->pixel_array[i+18]>>6;
-        num8 = img->pixel_array[i+21]>>7;
-
-        ch =  num1+num2+num3+num4+num5+num6+num7+num8;
+        for (int g = 0, po = 7; g <= 21; po--, g+=3) {
+//            printf("pixel_array[%d] = %d\n",i+g,img->pixel_array[i+g]);
+            num = img->pixel_array[i+g];
+            if (num != 0 ){
+                num = 1*pow(2,po);
+//                printf ("doing 1*2^%d\n",po);
+            }
+            sum+=num;
+//            printf("sum is now: %d\n",sum);
+        }
+//        num1 = img->pixel_array[i];
+//        num2 = img->pixel_array[i+3]>>1;
+//        num3 = img->pixel_array[i+6]>>2;
+//        num4 = img->pixel_array[i+9]>>3;
+//        num5 = img->pixel_array[i+12]>>4;
+//        num6 = img->pixel_array[i+15]>>5;
+//        num7 = img->pixel_array[i+18]>>6;
+//        num8 = img->pixel_array[i+21]>>7;
+//        printf("sum is: %d\n",sum);
+        ch =  sum;
+//        printf("character is: %c\n",ch);
+        printf("%c",ch);
         fprintf(fout,"%c",ch);
         row_pos++;
+        sum = 0;
     }
     fclose(fout);
 }
@@ -666,7 +697,9 @@ int main(){
 //    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
 //   printf("Are pictures the same? %d\n",imageEquals(a,b));
      IMAGE *test =  load_bmp("tux-pirate.bmp");
-    stringToImage( test,"poem.txt");
+     stringToImage( test,"strFile.txt");
+     IMAGE *after =  load_bmp("zitima7.bmp");
+     imageToString(after);
    // IMAGE *test1 =  load_bmp("4x3.bmp");
    // print_information(test1);
    // IMAGE *test2 =  load_bmp("image2.bmp");
