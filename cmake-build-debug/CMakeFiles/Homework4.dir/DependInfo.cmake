@@ -4,8 +4,15 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/Waterproof.c" "/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/CMakeFiles/Homework4.dir/Waterproof.c.o"
-  "/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/bmp.c" "/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/CMakeFiles/Homework4.dir/bmp.c.o"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/Waterproof.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/Waterproof.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/bmp.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/bmp.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/decodeStegano.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/decodeStegano.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/decodeText.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/decodeText.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/encodeStegano.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/encodeStegano.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/encodeText.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/encodeText.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/grayscale.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/grayscale.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/imageToString.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/imageToString.c.obj"
+  "C:/Users/apatt/CLionProjects/EPL232_HW4/stringToImage.c" "C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/CMakeFiles/Homework4.dir/stringToImage.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

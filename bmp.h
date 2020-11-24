@@ -1,3 +1,6 @@
+#ifndef HOMEWORK4_BMP_H
+#define HOMEWORK4_BMP_H
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -103,3 +106,5 @@ Color *get_pixel_color(IMAGE* image, int x, int y);
  * @param img
  */
 void print_information(IMAGE *img);
+
+#endif //HOMEWORK4_BMP_H

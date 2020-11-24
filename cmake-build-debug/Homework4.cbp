@@ -8,82 +8,124 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug"/>
+				<Option working_dir="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug"/>
+				<Option working_dir="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Homework4">
-				<Option output="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Homework4.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug"/>
+				<Option output="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Homework4.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.4.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.4.0/../../../../lib/../include/w32api"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 Homework4"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 Homework4"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Homework4/fast">
-				<Option output="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Homework4.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug"/>
+				<Option output="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Homework4.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.4.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.4.0/../../../../lib/../include/w32api"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 Homework4/fast"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 Homework4/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug"/>
+				<Option working_dir="C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/apatt/CLionProjects/EPL232_HW4/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/Waterproof.c">
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/Waterproof.c">
 			<Option target="Homework4"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/bmp.c">
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/bmp.c">
 			<Option target="Homework4"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/bmp.h">
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/bmp.h">
 			<Option target="Homework4"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/chris/CLionProjects/WaterProofing_Assignment/CMakeLists.txt">
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/decodeStegano.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/decodeStegano.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/decodeText.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/decodeText.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/encodeStegano.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/encodeStegano.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/encodeText.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/encodeText.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/grayscale.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/grayscale.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/imageToString.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/imageToString.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/stringToImage.c">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/stringToImage.h">
+			<Option target="Homework4"/>
+		</Unit>
+		<Unit filename="C:/Users/apatt/CLionProjects/EPL232_HW4/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
