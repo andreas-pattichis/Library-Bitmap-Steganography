@@ -540,7 +540,7 @@ void imageToString(IMAGE *img){
     FILE *fout = fopen("zitima8.txt","a+");
 
     //Loop through the whole pixel array
-    for (i = 0; i < img->pixel_array_size-3; i+=24) {
+    for (i = 0; i < img->pixel_array_size-3; i++) {
         //print a new line after each row of pixels
         // skip the loop count ahead of the padded bytes
         if (row_pos == img->row_length/3) {
@@ -581,14 +581,6 @@ int main(){
     char *decoded_text = decodeTextFromImage(with_text,280,69);
     printf("%s\n",decoded_text);
 
-//    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
-//    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
-//   printf("Are pictures the same? %d\n",imageEquals(a,b));
-//    IMAGE *test =  load_bmp("tux-pirate.bmp");
-//    stringToImage( test,"poem.txt");
-//    IMAGE *test1 =  load_bmp("4x3.bmp");
-//    print_information(test1);
-//    IMAGE *test2 =  load_bmp("image2.bmp");
 //    print_information(test2);
 
    // IMAGE *test2 =  load_bmp("image1.bmp");
