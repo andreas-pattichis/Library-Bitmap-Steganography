@@ -158,14 +158,15 @@ int *createPermutationFunction(int n, unsigned int system_key){
 }
 
 void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
-   unsigned char c = 'a';
-    int ii = 0;
-    while (c != '\0'){
-        c = text[ii];
 
-        printf("%d [%c] -> %d\n",ii,c,c);
-        ii++;
-    }
+//   unsigned char c = 'a';
+//    int ii = 0;
+//    while (c != '\0'){
+//        c = text[ii];
+//
+//        printf("%d [%c] -> %d\n",ii,c,c);
+//        ii++;
+//    }
 
 
 
@@ -179,7 +180,7 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     for (int i = 0; i < (1+strlen(text))*8; i++) {
         b = getBit(text,i);
         o = permutations[i];
-        printf("%d\n",o);
+//        printf("%d\n",o);
         new_pixel_array[o] = new_pixel_array[o] & 254;
         new_pixel_array[o] = new_pixel_array[o] | b;
     }
@@ -200,6 +201,7 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
 }
 
 char *readTextFromFile(char *filename){
+    int c1;
     char c,*text;
     int index = 0;
     FILE * fp;
@@ -209,10 +211,19 @@ char *readTextFromFile(char *filename){
         return NULL;
     }
     text = (char *)calloc(MAX_WORDS,sizeof(char));
-    while ((c = fgetc(fp)) != EOF){
+    while (1){
+        c1 = fgetc(fp);
+        if (c1 == EOF){
+            break;
+        }
+        if (c1 == '\r'){
+            continue;
+        }
+        c = c1;
         text[index] = c;
         index++;
     }
+    text[index] = '\0';
     fclose(fp);
 //    printf("%s\n",text);
     // We know that im getting the text correctly
@@ -222,13 +233,13 @@ char *readTextFromFile(char *filename){
 char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
     char *text = calloc(textLen,sizeof(char));
     int counter = 7,text_counter = 0, character_sum = 0;
-    int o = 0,n = (1+textLen)*8,*permutations = createPermutationFunction(n,system_key);
+    int o = 0,n = (textLen)*8,*permutations = createPermutationFunction(n,system_key);
 //    printf("arr is: %d and len is %d\n",n,textLen);
 
-    printf("\n\n\n------------------------------------\n\n\n");
-    for (int i = 0; i < (1+textLen)*8; i++) {
+//    printf("\n\n\n------------------------------------\n\n\n");
+    for (int i = 0; i < (textLen)*8; i++) {
         o = permutations[i];
-        printf("%d\n",o);
+//        printf("%d\n",o);
         int aa = img->pixel_array[o] & 1;
 //        printf("%d",aa);
         aa = aa * pow(2,counter);
@@ -562,9 +573,38 @@ int main(){
 //        if(i%8==0)printf("\n");
 //        printf("%d",getBit("can", i));
 //    }
+
+    IMAGE *image =  load_bmp("tux-bonaparte.bmp");
+    char *text = readTextFromFile("poem.txt");
+    putTextInPicture(image,text,69);
+    IMAGE *with_text =  load_bmp("withEncodedText.bmp");
+    char *decoded_text = decodeTextFromImage(with_text,280,69);
+    printf("%s\n",decoded_text);
+
+//    IMAGE *a =  load_bmp("tux-bonaparte.bmp");
+//    IMAGE *b =  load_bmp("tux-bonaparte.bmp");
+//   printf("Are pictures the same? %d\n",imageEquals(a,b));
+//    IMAGE *test =  load_bmp("tux-pirate.bmp");
+//    stringToImage( test,"poem.txt");
+//    IMAGE *test1 =  load_bmp("4x3.bmp");
+//    print_information(test1);
+//    IMAGE *test2 =  load_bmp("image2.bmp");
+//    print_information(test2);
+
+   // IMAGE *test2 =  load_bmp("image1.bmp");
+   // createGrayscale(test2);
+//    IMAGE *cover =  load_bmp("IMG_6865.bmp");
+//    IMAGE *secret =  load_bmp("IMG_6875.bmp");
+//    change_pixels(cover,secret,4);
+//    IMAGE *coded = load_bmp("file_name.bmp");
+//    decode_image(coded,4);
+//    IMAGE *cover =  load_bmp("4x3.bmp");
+//    IMAGE *secret =  load_bmp("4x3.bmp");
+
     IMAGE *test =  load_bmp("tux-pirate.bmp");
     stringToImage( test,"strFile.txt");
     IMAGE *test2 =  load_bmp("zitima7.bmp");
     imageToString(test2);
+
     return 0;
 }
