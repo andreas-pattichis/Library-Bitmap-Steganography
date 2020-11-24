@@ -557,6 +557,9 @@ void stringToImage(IMAGE *img, char *textFileName){
 //    for(i=0;i<=cnt;i++)
 //        printf("%c",text[i]);
 //    printf("\n");
+//    for (int j = 0; j < cnt; ++j) {
+//        printf("%c",text[j]);
+//    }
 
 
     int bits[cnt*8];
@@ -636,19 +639,19 @@ void imageToString(IMAGE *img){
     char ch;
     int num;
 //    int num1 = 0,num2 = 0,num3 = 0,num4 = 0,num5 = 0,num6 = 0,num7 = 0,num8 = 0;
-    FILE *fout = fopen("zitima8.txt","a+");
+    FILE *fout = fopen("zitima8.txt","w");
 
     //Loop through the whole pixel array
     for (i = 0; i < img->pixel_array_size-24; i+=24) {
         //print a new line after each row of pixels
         // skip the loop count ahead of the padded bytes
-        if (row_pos == img->row_length/3) {
-            printf("\n");
-            row_pos = 0; 			    // reset the row count.
-            i = i + img->padding - 1; 	// skip padding, minus 1 because
-            //k++;
-            continue;   			    // for condition will add 1 to i;
-        }
+//        if (row_pos == img->row_length/3) {
+//            printf("\n");
+//            row_pos = 0; 			    // reset the row count.
+//            i = i + img->padding - 1; 	// skip padding, minus 1 because
+//            //k++;
+//            continue;   			    // for condition will add 1 to i;
+//        }
 
         for (int g = 0, po = 7; g <= 21; po--, g+=3) {
 //            printf("pixel_array[%d] = %d\n",i+g,img->pixel_array[i+g]);
