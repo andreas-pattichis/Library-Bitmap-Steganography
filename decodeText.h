@@ -1,5 +1,5 @@
-#ifndef HOMEWORK4_ENCODETEXT_H
-#define HOMEWORK4_ENCODETEXT_H
+#ifndef HOMEWORK4_DECODETEXT_H
+#define HOMEWORK4_DECODETEXT_H
 
 #include "bmp.h"
 #include <math.h>
@@ -24,10 +24,10 @@ int *createPermutationFunction(int n, unsigned int system_key);
 /**
  *
  * @param img
- * @param text
+ * @param textLen
  * @param system_key
+ * @return
  */
-void putTextInPicture(IMAGE *img, char *text, unsigned int system_key);
+char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key);
 
-
-#endif //HOMEWORK4_ENCODETEXT_H
+#endif //HOMEWORK4_DECODETEXT_H
