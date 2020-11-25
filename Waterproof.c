@@ -1,3 +1,4 @@
+
 #include "bmp.h"
 
 #include <string.h>
@@ -148,11 +149,11 @@ int *createPermutationFunction(int n, unsigned int system_key){
         arr[i] = i;
     }
     for (int i = 0; i < n; i++) {
-       int a = rand() % n;
-       int b = rand() % n;
-       temp = arr[a];
-       arr[a] = arr[b];
-       arr[b] = temp;
+        int a = rand() % n;
+        int b = rand() % n;
+        temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
     }
     return arr;
 }
@@ -567,8 +568,8 @@ void stringToImage(IMAGE *img, char *textFileName){
         bits[ii] = 128 * getBit(text,ii /*img->height * (i / img->height) + (i % img->width)*/);
 
         // TESTING TO SEE IF THE BITS HAVE BEEN
-       // printf("%d\t",bits[ii]);
-       //bits array is correct
+        // printf("%d\t",bits[ii]);
+        //bits array is correct
     }
     int k=0;
 
@@ -584,7 +585,7 @@ void stringToImage(IMAGE *img, char *textFileName){
             i = i + img->padding - 1; 	// skip padding, minus 1 because
             //k++;
             continue;   			    // for condition will add 1 to i;
-            }
+        }
 
         if(bits[k]==128){
             new_pixel_array[i++] = (unsigned char)(128);

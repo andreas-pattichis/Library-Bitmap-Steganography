@@ -1,23 +1,13 @@
 /*
-#include "stringToImage.h"
+#include "Library.h"
 
-int getBit(char *m, int n){
-    if(n>=0 && n<=8*strlen(m)) {
-        int i = n / 8;
-        char ch = m[i];
-        int bitStatus;
-        bitStatus = (ch >> 7 - (n % 8)) & 1;
-        return bitStatus;
-    }
-    return 0;
-}
 
-void stringToImage(IMAGE *img, char *textFile){
-    char text[img->height * img->width];
+void stringToImage(IMAGE *img, char *textFileName){
+    char text[(img->height * img->width)/8];    // why
 
     FILE *filePointer;
 
-    filePointer = fopen(textFile, "r");
+    filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
@@ -29,9 +19,10 @@ void stringToImage(IMAGE *img, char *textFile){
             cnt++;
         }
     }
+    // cnt is how many characters we can put into the image
     fclose(filePointer);
 
-    filePointer = fopen(textFile, "r");
+    filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
@@ -43,21 +34,26 @@ void stringToImage(IMAGE *img, char *textFile){
         text[i] = ch;
         i++;
     }
+    // now we have put our text in the array
     fclose(filePointer);
 
-    /* CHECKING IF THE FILE HAS BEEN READ CORRECTLY
-    printf("\n\n%d\n\n",cnt);
-    for(i=0;i<=cnt;i++)
-        printf("%c",text[i]);
-    printf("\n");
-    */
-/*
-    int bits[cnt*8+1];
+    // CHECKING IF THE FILE HAS BEEN READ CORRECTLY
+//    printf("\n\n%d\n\n",cnt);
+//    for(i=0;i<=cnt;i++)
+//        printf("%c",text[i]);
+//    printf("\n");
+//    for (int j = 0; j < cnt; ++j) {
+//        printf("%c",text[j]);
+//    }
 
-    for(i=0;i<=cnt*8;i++){
-        bits[i] = 128 * getBit(text, img->height * (i / img->height) + (i % img->width));
-        /* TESTING TO SEE IF THE BITS HAVE BEEN
-        //printf("%d\t",bits[i]);*//*
+
+    int bits[cnt*8];
+    for(int ii=0;ii<cnt*8;ii++){
+        bits[ii] = 128 * getBit(text,ii /*img->height * (i / img->height) + (i % img->width)*//*);
+
+        // TESTING TO SEE IF THE BITS HAVE BEEN
+        // printf("%d\t",bits[ii]);
+        //bits array is correct
     }
     int k=0;
 
@@ -89,6 +85,13 @@ void stringToImage(IMAGE *img, char *textFile){
         //advance the position we are in the row, so we know when we can skip the padding bytes
         row_pos++;
     }
+//    for (int j = 0; j < 24; j+=3) {
+//        if (j % 8 == 0){
+//            printf("\n");
+//        }
+//        printf("new_pixel_array[%d] = %d\n",j,new_pixel_array[j]);
+//    }
+//pixel array is correct
     IMAGE *new = (IMAGE *)malloc(sizeof(IMAGE));
     new->padding = img->padding;
     new->row_length = img->row_length;
@@ -98,10 +101,11 @@ void stringToImage(IMAGE *img, char *textFile){
     new->bbp = img->bbp;
     new->pixel_array = new_pixel_array;
     // Save file
-    reverse_pixel_array(new);
+//    reverse_pixel_array(new);
     FILE *file = fopen("zitima7.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new->pixel_array_size, file);
     fclose(file);
-}*/
+}
+*/

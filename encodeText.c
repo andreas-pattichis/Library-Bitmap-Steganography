@@ -1,48 +1,63 @@
 /*
-#include "encodeText.h"
+#include "Library.h"
 
-int getBit(char *m, int n){
-    if(n>=0 && n<=8*strlen(m)) {
-        int i = n / 8;
-        char ch = m[i];
-        int bitStatus;
-        bitStatus = (ch >> 7 - (n % 8)) & 1;
-        return bitStatus;
+char *readTextFromFile(char *filename){
+    int c1;
+    char c,*text;
+    int index = 0;
+    FILE * fp;
+    fp = fopen (filename, "r");
+    if (fp==NULL){
+        printf("No such file.");
+        return NULL;
     }
-    return 0;
-}
-
-int *createPermutationFunction(int n, unsigned int system_key){
-    srand(system_key);
-    int temp;
-    int *arr = calloc(n,sizeof(int));
-    // fill array with values
-    for (int i = 0; i < n; i++) {
-        arr[i] = i;
+    text = (char *)calloc(5000,sizeof(char));
+    while (1){
+        c1 = fgetc(fp);
+        if (c1 == EOF){
+            break;
+        }
+        if (c1 == '\r'){
+            continue;
+        }
+        c = c1;
+        text[index] = c;
+        index++;
     }
-    for (int i = 0; i < n; i++) {
-        int a = rand() % n;
-        int b = rand() % n;
-        temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
-    }
-    return arr;
+    text[index] = '\0';
+    fclose(fp);
+//    printf("%s\n",text);
+    // We know that im getting the text correctly
+    return text;
 }
 
 void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
 
+//   unsigned char c = 'a';
+//    int ii = 0;
+//    while (c != '\0'){
+//        c = text[ii];
+//
+//        printf("%d [%c] -> %d\n",ii,c,c);
+//        ii++;
+//    }
+
+
+
+
+
+
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     memcpy(new_pixel_array,img->pixel_array,img->pixel_array_size);
     int b,o,n = (1+strlen(text))*8,*permutations = createPermutationFunction(n,system_key);
-
+//    printf("arr is: %d and len is %d\n",n,strlen(text));
     for (int i = 0; i < (1+strlen(text))*8; i++) {
         b = getBit(text,i);
         o = permutations[i];
+//        printf("%d\n",o);
         new_pixel_array[o] = new_pixel_array[o] & 254;
         new_pixel_array[o] = new_pixel_array[o] | b;
     }
-
     IMAGE new;
     new.padding = img->padding;
     new.row_length = img->row_length;
@@ -57,4 +72,5 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
-}*/
+}
+*/
