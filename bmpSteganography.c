@@ -49,21 +49,25 @@ int main(int args, char* argv[]) {
 
     // FUNCTION 3: -ENCODE_STEGANOGRAPHY
     else if(strcmp(choice,"-encodeStegano") == 0){
-        char *num = argv[2];
-        int nBits = (int) (num[0] - '0');
+
         IMAGE *cover =  load_bmp(argv[3]);
-        IMAGE *secret =  load_bmp(argv[4]);
+
 
         if((cover->file_head->ident[0]!='B' || cover->file_head->ident[1]!='M')|| (convert_to_anInteger(cover->info_head->bbp,2) != 24)|| (convert_to_anInteger(cover->info_head->compression_method,4)!=0)){
             printf("Wrong input!\n\nConsider this format:\n$./bmpSteganography -encodeStegano nbBits coverImage.bmp secretImage.bmp");
             return EXIT_FAILURE;
         }
 
+        IMAGE *secret =  load_bmp(argv[4]);
         if((secret->file_head->ident[0]!='B' || secret->file_head->ident[1]!='M')|| (convert_to_anInteger(secret->info_head->bbp,2) != 24)|| (convert_to_anInteger(secret->info_head->compression_method,4)!=0)){
             printf("Wrong input!\n\nConsider this format:\n$./bmpSteganography -encodeStegano nbBits coverImage.bmp secretImage.bmp");
             return EXIT_FAILURE;
         }
 
+        cover =  load_bmp(argv[3]);
+        secret =  load_bmp(argv[4]);
+        char *num = argv[2];
+        int nBits = (int) (num[0] - '0');
         change_pixels(cover,secret,nBits,argv[3]);
     }
 

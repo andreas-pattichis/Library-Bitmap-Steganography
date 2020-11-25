@@ -139,4 +139,11 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *
  */
 void imageToString(IMAGE *img);
 
+/**
+ *
+ * @param text
+ * @return
+ */
+int calculate_length_of_String(char *text);
+
 #endif //HOMEWORK4_LIBRARY_H
