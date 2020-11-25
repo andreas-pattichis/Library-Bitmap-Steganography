@@ -1,4 +1,3 @@
-/*
 #include "CommonFunctions.h"
 
 int getBit(char *m, int n){
@@ -29,4 +28,3 @@ int *createPermutationFunction(int n, unsigned int system_key){
     }
     return arr;
 }
- */

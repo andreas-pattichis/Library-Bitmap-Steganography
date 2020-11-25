@@ -8,13 +8,6 @@
 #include <string.h>
 
 /**
- * Struct that represents a color.
- */
-typedef struct {
-    char r, g, b;
-} Color;
-
-/**
  * Struct that represents the BitMap File Header of the image
  */
 typedef struct {
@@ -57,8 +50,6 @@ typedef struct{
     uint32_t bbp;
 } IMAGE;
 
-void print_col(Color *c);
-
 /**
  * Method that will store the image data in the struct IMAGE
  *
@@ -71,41 +62,5 @@ IMAGE* load_bmp(const char *file_name);
  * Method to free the memory used by the images pixel data
  */
 void free_img(unsigned char *pixel_array, IMAGE *img);
-
-/**
- * Method to print out pixel data to std out omitting padded bytes
- *
- * @param img
- */
-void print_pixel_array(IMAGE *img);
-
-/**
- * Method to convert the pixel array in-place from blue, green, red colour space, to the red, green, blue colour space
- */
-extern void convert_to_rgb(IMAGE *img);
-
-/**
- * Method to reverse the pixel array because BMP files by definition are stored upside down
- * @param img
- */
-extern void reverse_pixel_array(IMAGE *img);
-
-/**
- * Method to get the colour depth for the currently loaded image as integer.
- */
-extern uint16_t get_colour_depth(IMAGE *img);
-
-char* my_substring(const char *string,int position, int length);
-
-int get_offset_in_data(int x, int y, int img_w, int img_h);
-
-Color *get_pixel_color(IMAGE* image, int x, int y);
-
-
-/**
- * Prints a list displaying all the information of the BMP Image
- * @param img
- */
-void print_information(IMAGE *img);
 
 #endif //HOMEWORK4_BMP_H
