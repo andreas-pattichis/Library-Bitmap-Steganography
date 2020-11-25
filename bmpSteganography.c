@@ -1,3 +1,12 @@
+/**
+ *  @file bmpSteganography.c
+ *  @brief Class that is used as a client.
+ *
+ *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @bug No know bugs.
+ */
+
+/* Libraries included */
 #include "bmp.h"
 #include "bmplib.h"
 

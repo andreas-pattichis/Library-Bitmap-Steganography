@@ -1,3 +1,11 @@
+/**
+ *  @file bmp.h
+ *  @brief Class that represents a BMP image..
+ *
+ *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @bug No know bugs.
+ */
+
 #ifndef HOMEWORK4_BMP_H
 #define HOMEWORK4_BMP_H
 
@@ -8,7 +16,7 @@
 #include <string.h>
 
 /**
- * Struct that represents the BitMap File Header of the image
+ * @brief Struct that represents the BitMap File Header of the image
  */
 typedef struct {
     char ident[2];      // bfType: Will declare if the image is a .bmp file
@@ -19,7 +27,7 @@ typedef struct {
 } FILE_HEADER;
 
 /**
- * Struct that represents the BitMap Info Header of the image
+ * @brief Struct that represents the BitMap Info Header of the image
  */
 typedef struct {
     char size[4]; // biSize: Specifies the size of the BITMAPINFOHEADER structure, in bytes
@@ -36,7 +44,7 @@ typedef struct {
 } INFO_HEADER;
 
 /**
- * Struct to hold all necessary image data
+ * @brief Struct to hold all necessary image data
  */
 typedef struct{
     FILE_HEADER *file_head;
@@ -51,7 +59,7 @@ typedef struct{
 } IMAGE;
 
 /**
- * Method that will store the image data in the struct IMAGE
+ * @brief Method that will store the image data in the struct IMAGE
  *
  * @param file_name
  * @return
@@ -59,7 +67,7 @@ typedef struct{
 IMAGE* load_bmp(const char *file_name);
 
 /**
- * Method to free the memory used by the images pixel data
+ * @brief Method to free the memory used by the images pixel data
  */
 void free_img(unsigned char *pixel_array, IMAGE *img);
 

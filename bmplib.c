@@ -1,13 +1,22 @@
+/**
+ *  @file bmplib.c
+ *  @brief Class that includes the implementation of all the functions that are used in the 8 operations.
+ *
+ *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @bug No know bugs.
+ */
+
 #include "bmplib.h"
 
 int convert_to_anInteger(char *arr, int arrLen){
     int sum = 0,power = arrLen*8 - 1,to_and,which = 0,pos = 7,t,add;
-    // reverse the arr because of little endian
+    /* Reverses the arr because of little endian */
     if (arrLen == 2){
         t = arr[0];
         arr[0] = arr[1];
         arr[1] = t;
     }
+
     else {
         t = arr[0];
         arr[0] = arr[3];
@@ -16,6 +25,7 @@ int convert_to_anInteger(char *arr, int arrLen){
         arr[1] = arr[2];
         arr[2] = t;
     }
+
     while (1){
         to_and = arr[which] & (int) pow(2,pos);
         if (to_and != 0 )
@@ -32,10 +42,12 @@ int convert_to_anInteger(char *arr, int arrLen){
             break;
         }
     }
+
     return sum;
 }
 
 void print_information(IMAGE *img){
+    /* Stores the information to the appropriate variables */
     int BMbfSize = convert_to_anInteger(img->file_head->file_size,4);
     int bfReserved1 = convert_to_anInteger(img->file_head->reserve_1,2);
     int bfReserved2 = convert_to_anInteger(img->file_head->reserve_2,2);
@@ -52,6 +64,7 @@ void print_information(IMAGE *img){
     int biClrUsed = convert_to_anInteger(img->info_head->num_colours,4);
     int biClrImportant = convert_to_anInteger(img->info_head->important_colours,4);
 
+    /* Prints the information */
     printf("BITMAP_FILE_HEADER\n");
     printf("==================\n");
     printf("bfType: BM\n");
@@ -76,26 +89,33 @@ void print_information(IMAGE *img){
 }
 
 void createGrayscale(IMAGE *img, char *name) {
+
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     int i;
     int row_pos = 0;
-    //Loop through the whole pixel array
+
+    /* Goes through the whole pixel array */
     for (i = 0; i < img->pixel_array_size-3; i++) {
-        //print a new line after each row of pixels
-        // skip the loop count ahead of the padded bytes
+        /* Prints a new line after each row of pixels
+           skip the loop count ahead of the padded bytes. */
         if (row_pos == img->row_length/3) {
             printf("\n");
-            row_pos = 0; 			    //reset the row count.
-            i = i + img->padding - 1; 	        //skip padding, minus 1 because
-            continue;   			    //for condition will add 1 to i;
+            row_pos = 0; 			            /* Resets the row count */
+            i = i + img->padding - 1; 	        /* Skips padding, minus 1 */
+            continue;   			            /* For condition will add 1 to i */
         }
+        /* Luminance = 0.299*red + 0.587*green + 0.114*blue */
         int sum = (unsigned char)(0.114* img->pixel_array[i] + 0.587* img->pixel_array[i+1] + 0.299*img->pixel_array[i+2]);
+
+        /* Fills the new pixel array */
         new_pixel_array[i++] = (unsigned char)(sum );
         new_pixel_array[i++] = (unsigned char)(sum );
         new_pixel_array[i] = (unsigned char)(sum );
-        //advance the position we are in the row, so we know when we can skip the padding bytes
+        /* Advance the position we are in the row, so we know when we can skip the padding bytes */
         row_pos++;
     }
+
+    /* Creates the new image */
     IMAGE new;
     new.padding = img->padding;
     new.row_length = img->row_length;
@@ -104,7 +124,8 @@ void createGrayscale(IMAGE *img, char *name) {
     new.height = img->height;
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
-    // Save file
+
+    /* Saves the new image */
     char *newName;
     strncpy(newName,name,strlen(name)-4);
     strcat(newName,"_grayscale.bmp");
@@ -126,22 +147,27 @@ unsigned char calculate_mask(unsigned int proof_length){
 }
 
 void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *name) {
+
     unsigned char *new_pixel_array = malloc(cover->pixel_array_size);
     int new_arr_length = cover->pixel_array_size;
     memcpy(new_pixel_array,cover->pixel_array,new_arr_length);
     unsigned char rc,gc,bc,rs,gs,bs,rn,gn,bn;
+
     int i;
     int row_pos = 0;
-    //Loop through the whole pixel array
+
+    /* Goes through the whole pixel array */
     for (i = 0; i < cover->pixel_array_size-3; i++) {
-        //print a new line after each row of pixels
-        // skip the loop count ahead of the padded bytes
+        /* Prints a new line after each row of pixels
+           skip the loop count ahead of the padded bytes. */
         if (row_pos == cover->row_length/3) {
             printf("\n");
-            row_pos = 0; 			        // reset the row count.
-            i = i + cover->padding - 1; 	// skip padding, minus 1 because
-            continue;   			        // for condition will add 1 to i;
+            row_pos = 0; 			        /* Resets the row count */
+            i = i + cover->padding - 1; 	/* Skips padding, minus 1 */
+            continue;   			        /* For condition will add 1 to i */
         }
+
+        /* Fills the new pixel array */
         bc = cover->pixel_array[i];
         bs = secret->pixel_array[i];
         bn = (bs >> (8-proof_len)) | (bc & calculate_mask(proof_len));
@@ -156,9 +182,12 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *nam
         rs = secret->pixel_array[i];
         rn = (rs >> (8-proof_len)) | (rc & calculate_mask(proof_len));
         new_pixel_array[i] = rn;
-        //advance the position we are in the row, so we know when we can skip the padding bytes
+
+        /* Advance the position we are in the row, so we know when we can skip the padding bytes */
         row_pos++;
     }
+
+    /* Creates the new image */
     IMAGE new;
     new.padding = cover->padding;
     new.row_length = cover->row_length;
@@ -167,9 +196,10 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *nam
     new.height = cover->height;
     new.bbp = cover->bbp;
     new.pixel_array = new_pixel_array;
-    // Save file
+
+    /* Saves the new image */
     //char *newName = "new-";
-   // strcat(newName,name);
+    //strcat(newName,name);
     //printf("%s",newName);
     FILE *file = fopen(/*newName*/"new-.bmp", "wb");
     fwrite(cover->file_head, sizeof(FILE_HEADER), 1, file);
@@ -181,18 +211,22 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *nam
 void decode_image(IMAGE *img,unsigned int proof_len, char *name){
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     unsigned char r,g,b;
+
     int i;
     int row_pos = 0;
-    //Loop through the whole pixel array
+
+    /* Goes through the whole pixel array */
     for (i = 0; i < img->pixel_array_size-3; i++) {
-        //print a new line after each row of pixels
-        // skip the loop count ahead of the padded bytes
+        /* Prints a new line after each row of pixels
+           skip the loop count ahead of the padded bytes. */
         if (row_pos == img->row_length/3) {
             printf("\n");
-            row_pos = 0; 			        // reset the row count.
-            i = i + img->padding - 1;   	// skip padding, minus 1 because
-            continue;   			        // for condition will add 1 to i;
+            row_pos = 0; 			        /* Resets the row count */
+            i = i + img->padding - 1;   	/* Skips padding, minus 1 */
+            continue;   			        /* For condition will add 1 to i */
         }
+
+        /* Fills the new pixel array */
         b = img->pixel_array[i];
         b = b << (8-proof_len);
         new_pixel_array[i] = b;
@@ -204,9 +238,12 @@ void decode_image(IMAGE *img,unsigned int proof_len, char *name){
         r = img->pixel_array[i];
         r = r << (8-proof_len);
         new_pixel_array[i] = r;
-        //advance the position we are in the row, so we know when we can skip the padding bytes
+
+        /* Advance the position we are in the row, so we know when we can skip the padding bytes */
         row_pos++;
     }
+
+    /* Creates the new image */
     IMAGE new;
     new.padding = img->padding;
     new.row_length = img->row_length;
@@ -215,7 +252,8 @@ void decode_image(IMAGE *img,unsigned int proof_len, char *name){
     new.height = img->height;
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
-    // Save file
+
+    /* Saves the new image */
     //char *newName = "new-";
     // strcat(newName,name);
     FILE *file = fopen(/*newName*/"new-new-.bmp", "wb");
@@ -227,14 +265,17 @@ void decode_image(IMAGE *img,unsigned int proof_len, char *name){
 
 char *readTextFromFile(char *filename){
     int c1;
-    char c,*text;
+    char *text;
+    char c;
     int index = 0;
+
     FILE * fp;
     fp = fopen (filename, "r");
     if (fp==NULL){
         printf("No such file.");
         return NULL;
     }
+
     text = (char *)calloc(MAX_WORDS,sizeof(char));
     while (1){
         c1 = fgetc(fp);
@@ -251,20 +292,24 @@ char *readTextFromFile(char *filename){
     text[index] = '\0';
     fclose(fp);
 
-    // We know that im getting the text correctly
     return text;
 }
 
 void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *name){
+
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     memcpy(new_pixel_array,img->pixel_array,img->pixel_array_size);
+
     int b,o,n = (1+strlen(text))*8,*permutations = createPermutationFunction(n,system_key);
+
     for (int i = 0; i < (1+strlen(text))*8; i++) {
         b = getBit(text,i);
         o = permutations[i];
         new_pixel_array[o] = new_pixel_array[o] & 254;
         new_pixel_array[o] = new_pixel_array[o] | b;
     }
+
+    /* Creates the new image */
     IMAGE new;
     new.padding = img->padding;
     new.row_length = img->row_length;
@@ -273,7 +318,8 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *nam
     new.height = img->height;
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
-    // Save file
+
+    /* Saves the new image */
     //char *newName = "new-";
     // strcat(newName,name);
     FILE *file = fopen(/*newName*/"withEncodedText.bmp", "wb");
@@ -284,9 +330,12 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *nam
 }
 
 char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *name){
+
     char *text = calloc(textLen,sizeof(char));
     int counter = 7,text_counter = 0, character_sum = 0;
+
     int o,n = (textLen) * 8,*permutations = createPermutationFunction(n, system_key);
+
     for (int i = 0; i < (textLen)*8; i++) {
         o = permutations[i];
         int aa = img->pixel_array[o] & 1;
@@ -301,6 +350,7 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *
         }
         else counter--;
     }
+
     FILE *fout = fopen( name,"w");
     fprintf(fout,"%s",text);
     fclose(fout);
@@ -308,26 +358,30 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *
 }
 
 void stringToImage(IMAGE *img, char *textFileName, char *name){
+
     char text[(img->height * img->width)/8];
+
     FILE *filePointer;
     filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
     }
-    int cnt = 0;
+
+    int cnt = 0; // cnt is how many characters we can put into the image
     while ((fgetc(filePointer)) != EOF) {
         if (cnt < (img->height * img->width)/8) {
             cnt++;
         }
     }
-    // cnt is how many characters we can put into the image
     fclose(filePointer);
+
     filePointer = fopen(textFileName, "r");
     if (filePointer == NULL){
         printf("File is not available \n");
         return;
     }
+
     int i=0;
     char ch;
     while (i<=cnt) {
@@ -335,26 +389,30 @@ void stringToImage(IMAGE *img, char *textFileName, char *name){
         text[i] = ch;
         i++;
     }
+
     // now we have put our text in the array
     fclose(filePointer);
     int bits[cnt*8];
     for(int ii=0;ii<cnt*8;ii++){
         bits[ii] = 128 * getBit(text,ii);
     }
+
     int k=0;
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     int row_pos = 0;
-    //Loop through the whole pixel array
+
+    /* Goes through the whole pixel array */
     for (i = 0; i < img->pixel_array_size-3; i++) {
-        //print a new line after each row of pixels
-        // skip the loop count ahead of the padded bytes
+        /* Prints a new line after each row of pixels
+           skip the loop count ahead of the padded bytes. */
         if (row_pos == img->row_length/3) {
             printf("\n");
-            row_pos = 0; 			    // reset the row count.
-            i = i + img->padding - 1; 	// skip padding, minus 1 because
-            //k++;
-            continue;   			    // for condition will add 1 to i;
+            row_pos = 0; 			    /* Resets the row count */
+            i = i + img->padding - 1; 	/* Skips padding, minus 1 */
+            continue;   			    /* For condition will add 1 to i */
         }
+
+        /* Fills the new pixel array */
         if(bits[k]==128){
             new_pixel_array[i++] = (unsigned char)(128);
             new_pixel_array[i++] = (unsigned char)(128);
@@ -365,10 +423,14 @@ void stringToImage(IMAGE *img, char *textFileName, char *name){
             new_pixel_array[i++] = (unsigned char)(0);
             new_pixel_array[i] = (unsigned char)(0);
         }
+
         k++;
-        //advance the position we are in the row, so we know when we can skip the padding bytes
+
+        /* Advance the position we are in the row, so we know when we can skip the padding bytes */
         row_pos++;
     }
+
+    /* Creates the new image */
     IMAGE *new = (IMAGE *)malloc(sizeof(IMAGE));
     new->padding = img->padding;
     new->row_length = img->row_length;
@@ -377,7 +439,8 @@ void stringToImage(IMAGE *img, char *textFileName, char *name){
     new->height = img->height;
     new->bbp = img->bbp;
     new->pixel_array = new_pixel_array;
-    // Save file
+
+    /* Saves the new image */
     //char *newName = "new-";
     // strcat(newName,name);
     FILE *file = fopen(/*newName*/"zitima7.bmp", "wb");
@@ -392,22 +455,22 @@ void imageToString(IMAGE *img){
     int row_pos = 0;
     char ch;
     int num;
+
     FILE *fout = fopen("outputText.txt","w");
-    //Loop through the whole pixel array
+
+    /* Goes through the whole pixel array */
     for (i = 0; i < img->pixel_array_size-24; i+=24) {
+
         for (int g = 0, po = 7; g <= 21; po--, g+=3) {
-//            printf("pixel_array[%d] = %d\n",i+g,img->pixel_array[i+g]);
+
             num = img->pixel_array[i+g];
             if (num != 0 ){
                 num = 1*pow(2,po);
-//                printf ("doing 1*2^%d\n",po);
             }
             sum+=num;
-//            printf("sum is now: %d\n",sum);
         }
 
         ch =  sum;
-//        printf("character is: %c\n",ch);
         fprintf(fout,"%c",ch);
         row_pos++;
         sum = 0;
