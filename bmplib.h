@@ -24,7 +24,7 @@ void print_information(IMAGE *img);
  *
  * @param img
  */
-void createGrayscale(IMAGE *img);
+void createGrayscale(IMAGE *img, char *name);
 
 // OPERATION 3: ENCODE_STEGANOGRAPHY
 /**
@@ -40,7 +40,7 @@ unsigned char calculate_mask(unsigned int proof_length);
  * @param secret
  * @param proof_len
  */
-void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len);
+void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *name);
 
 // OPERATION 4: DECODE_STEGANOGRAPHY
 /**
@@ -48,7 +48,7 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len);
  * @param img
  * @param proof_len
  */
-void decode_image(IMAGE *img,unsigned int proof_len);
+void decode_image(IMAGE *img,unsigned int proof_len, char *name);
 
 // OPERATION 5: ENCODE_TEXT
 /**
@@ -64,7 +64,7 @@ char *readTextFromFile(char *filename);
  * @param text
  * @param system_key
  */
-void putTextInPicture(IMAGE *img, char *text, unsigned int system_key);
+void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *name);
 
 // OPERATION 6: DECODE_TEXT
 /**
@@ -74,7 +74,7 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key);
  * @param system_key
  * @return
  */
-char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key);
+char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *name);
 
 // OPERATION 7: IMAGE_TO_STRING
 /**
@@ -82,7 +82,7 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key);
  * @param img
  * @param textFileName
  */
- void stringToImage(IMAGE *img, char *textFileName);
+ void stringToImage(IMAGE *img, char *textFileName, char *name);
 
 // OPERATION 8: STRING_TO_IMAGE
 /**

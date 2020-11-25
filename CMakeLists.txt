@@ -3,4 +3,4 @@ project(Homework4 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Homework4 bmp.h bmp.c bmpSteganography.c CommonFunctions.c bmplib.c)
+add_executable(Homework4 bmp.h bmp.c bmpSteganography.c CommonFunctions.c bmplib.c CommonFunctions.h bmplib.h)

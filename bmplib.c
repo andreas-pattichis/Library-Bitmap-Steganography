@@ -75,7 +75,7 @@ void print_information(IMAGE *img){
     printf("\n***************************************************************************\n");
 }
 
-void createGrayscale(IMAGE *img) {
+void createGrayscale(IMAGE *img, char *name) {
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     int i;
     int row_pos = 0;
@@ -105,7 +105,10 @@ void createGrayscale(IMAGE *img) {
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
     // Save file
-    FILE *file = fopen("grayscaled.bmp", "wb");
+    char *newName;
+    strncpy(newName,name,strlen(name)-4);
+    strcat(newName,"_grayscale.bmp");
+    FILE *file = fopen(newName, "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
@@ -122,7 +125,7 @@ unsigned char calculate_mask(unsigned int proof_length){
     return mask;
 }
 
-void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
+void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *name) {
     unsigned char *new_pixel_array = malloc(cover->pixel_array_size);
     int new_arr_length = cover->pixel_array_size;
     memcpy(new_pixel_array,cover->pixel_array,new_arr_length);
@@ -165,14 +168,17 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len) {
     new.bbp = cover->bbp;
     new.pixel_array = new_pixel_array;
     // Save file
-    FILE *file = fopen("file_name.bmp", "wb");
+    //char *newName = "new-";
+   // strcat(newName,name);
+    //printf("%s",newName);
+    FILE *file = fopen(/*newName*/"new-.bmp", "wb");
     fwrite(cover->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(cover->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
 }
 
-void decode_image(IMAGE *img,unsigned int proof_len){
+void decode_image(IMAGE *img,unsigned int proof_len, char *name){
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     unsigned char r,g,b;
     int i;
@@ -210,7 +216,9 @@ void decode_image(IMAGE *img,unsigned int proof_len){
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
     // Save file
-    FILE *file = fopen("decoded.bmp", "wb");
+    //char *newName = "new-";
+    // strcat(newName,name);
+    FILE *file = fopen(/*newName*/"new-new-.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
@@ -242,11 +250,12 @@ char *readTextFromFile(char *filename){
     }
     text[index] = '\0';
     fclose(fp);
+
     // We know that im getting the text correctly
     return text;
 }
 
-void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
+void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *name){
     unsigned char *new_pixel_array = calloc(img->pixel_array_size,1);
     memcpy(new_pixel_array,img->pixel_array,img->pixel_array_size);
     int b,o,n = (1+strlen(text))*8,*permutations = createPermutationFunction(n,system_key);
@@ -265,14 +274,16 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key){
     new.bbp = img->bbp;
     new.pixel_array = new_pixel_array;
     // Save file
-    FILE *file = fopen("withEncodedText.bmp", "wb");
+    //char *newName = "new-";
+    // strcat(newName,name);
+    FILE *file = fopen(/*newName*/"withEncodedText.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
     fclose(file);
 }
 
-char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
+char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key, char *name){
     char *text = calloc(textLen,sizeof(char));
     int counter = 7,text_counter = 0, character_sum = 0;
     int o,n = (textLen) * 8,*permutations = createPermutationFunction(n, system_key);
@@ -290,10 +301,13 @@ char *decodeTextFromImage(IMAGE *img,int textLen,unsigned int system_key){
         }
         else counter--;
     }
+    FILE *fout = fopen( name,"w");
+    fprintf(fout,"%s",text);
+    fclose(fout);
     return text;
 }
 
-void stringToImage(IMAGE *img, char *textFileName){
+void stringToImage(IMAGE *img, char *textFileName, char *name){
     char text[(img->height * img->width)/8];
     FILE *filePointer;
     filePointer = fopen(textFileName, "r");
@@ -364,7 +378,9 @@ void stringToImage(IMAGE *img, char *textFileName){
     new->bbp = img->bbp;
     new->pixel_array = new_pixel_array;
     // Save file
-    FILE *file = fopen("zitima7.bmp", "wb");
+    //char *newName = "new-";
+    // strcat(newName,name);
+    FILE *file = fopen(/*newName*/"zitima7.bmp", "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new->pixel_array_size, file);
@@ -376,7 +392,7 @@ void imageToString(IMAGE *img){
     int row_pos = 0;
     char ch;
     int num;
-    FILE *fout = fopen("zitima8.txt","w");
+    FILE *fout = fopen("outputText.txt","w");
     //Loop through the whole pixel array
     for (i = 0; i < img->pixel_array_size-24; i+=24) {
         for (int g = 0, po = 7; g <= 21; po--, g+=3) {

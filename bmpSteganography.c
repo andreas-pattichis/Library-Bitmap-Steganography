@@ -9,54 +9,64 @@ int main(int args, char* argv[]) {
 
     char *choice = argv[1];
     printf("choice is: [%s]\n",choice);
-    if(strcmp(choice,"-list") == 0){
-        // FUNCTION 1: -LIST
-        IMAGE *test11 =  load_bmp(argv[2]);
-        print_information(test11);
 
-        //IMAGE *test12 =  load_bmp(argv[2]);
-        //print_information(test12);
+    // FUNCTION 1: -LIST
+    if(strcmp(choice,"-list") == 0){
+        int i;
+        for(i=2;i<args;i++) {
+            IMAGE *test1 = load_bmp(argv[i]);
+            print_information(test1);
+        }
     }
-    else if(strcmp(choice,"–grayscale") == 0){
-        // FUNCTION 2: -GRAYSCALE
-        IMAGE *test21 =  load_bmp(argv[2]);
-        createGrayscale(test21);
-        //IMAGE *test22 =  load_bmp(argv[2]);
-        //createGrayscale(test22);
+
+    // FUNCTION 2: -GRAYSCALE
+    else if(strcmp(choice,"-grayscale") == 0){
+        int i;
+        for(i=2;i<args;i++) {
+            IMAGE *test2 = load_bmp(argv[i]);
+            createGrayscale(test2,argv[i]);
+        }
     }
+
+    // FUNCTION 3: -ENCODE_STEGANOGRAPHY
     else if(strcmp(choice,"-encodeStegano") == 0){
-        // FUNCTION 3: -ENCODE_STEGANOGRAPHY
         char *num = argv[2];
         int nBits = (int) (num[0] - '0');
         IMAGE *cover =  load_bmp(argv[3]);
         IMAGE *secret =  load_bmp(argv[4]);
-        change_pixels(cover,secret,nBits);
+        change_pixels(cover,secret,nBits,argv[3]);
     }
+
+    // FUNCTION 4: -DECODE_STEGANOGRAPHY
     else if(strcmp(choice,"-decodeStegano") == 0){
-        // FUNCTION 4: -DECODE_STEGANOGRAPHY
         char *num = argv[2];
         int nBits = (int) (num[0] - '0');
         IMAGE *coded = load_bmp(argv[3]);
-        decode_image(coded,nBits);
+        decode_image(coded,nBits,argv[3]);
     }
+
+    // FUNCTION 5: -ENCODE_TEXT
     else if(strcmp(choice,"-encodeText") == 0){
-        // FUNCTION 5: -ENCODE_TEXT
         IMAGE *test5 =  load_bmp(argv[2]);
         char *text = readTextFromFile(argv[3]);
-        putTextInPicture(test5,text,69);
+        putTextInPicture(test5,text,69,argv[2]);
     }
-    else if(strcmp(choice,"–decodeText") == 0){
-        // FUNCTION 6: -DECODE_TEXT
+
+    // FUNCTION 6: -DECODE_TEXT
+    else if(strcmp(choice,"-decodeText") == 0){
         IMAGE *with_text =  load_bmp(argv[2]);
-        char *decoded_text = decodeTextFromImage(with_text,280,69);
+        char *decoded_text = decodeTextFromImage(with_text,280,69,argv[4]);
         printf("%s\n",decoded_text);
     }
-    else if(strcmp(choice,"–stringToImage") == 0){
-        // FUNCTION 7: -STRING_TO_IMAGE
+
+    // FUNCTION 7: -STRING_TO_IMAGE
+    else if(strcmp(choice,"-stringToImage") == 0){
         IMAGE *test7 =  load_bmp(argv[2]);
-        stringToImage( test7,argv[3]);
+        stringToImage( test7,argv[3],argv[2]);
     }
-    else if(strcmp(choice,"–imageToString") == 0){
+
+    // FUNCTION 8: -IMAGE_TO_STRING
+    else if(strcmp(choice,"-imageToString") == 0){
         // FUNCTION 8: -IMAGE_TO_STRING
         IMAGE *test8 =  load_bmp(argv[2]);
         imageToString(test8);
