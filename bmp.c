@@ -2,7 +2,7 @@
  *  @file bmp.c
  *  @brief Class that represents a BMP image..
  *
- *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @author Costa Christian (ccosta01), Andreas Pattichis (apatti01)
  *  @bug No know bugs.
  */
 

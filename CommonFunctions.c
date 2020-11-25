@@ -2,7 +2,7 @@
  *  @file CommonFunctions.c
  *  @brief Class that includes the implementation for all the functions that are used in multiple operations
  *
- *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @author Costa Christian (ccosta01), Andreas Pattichis (apatti01)
  *  @bug No know bugs.
  */
 

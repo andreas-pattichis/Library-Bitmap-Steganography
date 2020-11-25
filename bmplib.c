@@ -2,7 +2,7 @@
  *  @file bmplib.c
  *  @brief Class that includes the implementation of all the functions that are used in the 8 operations.
  *
- *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @author Costa Christian (ccosta01), Andreas Pattichis (apatti01)
  *  @bug No know bugs.
  */
 

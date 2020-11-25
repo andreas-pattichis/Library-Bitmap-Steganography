@@ -2,7 +2,7 @@
  *  @file bmpSteganography.c
  *  @brief Class that is used as a client.
  *
- *  @author Costa Christian (), Andreas Pattichis (apatti01)
+ *  @author Costa Christian (ccosta01), Andreas Pattichis (apatti01)
  *  @bug No know bugs.
  */
 
