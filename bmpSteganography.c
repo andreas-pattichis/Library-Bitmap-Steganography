@@ -15,9 +15,7 @@ int main(int args, char* argv[]) {
         printf("You should enter at least 2 files.\n");
         exit(1);
     }
-
     char *choice = argv[1];
-    printf("choice is: [%s]\n",choice);
 
     // FUNCTION 1: -LIST
     if(strcmp(choice,"-list") == 0){
@@ -64,8 +62,7 @@ int main(int args, char* argv[]) {
     // FUNCTION 6: -DECODE_TEXT
     else if(strcmp(choice,"-decodeText") == 0){
         IMAGE *with_text =  load_bmp(argv[2]);
-        char *decoded_text = decodeTextFromImage(with_text,280,69,argv[4]);
-        printf("%s\n",decoded_text);
+        decodeTextFromImage(with_text,280,69,argv[4]);
     }
 
     // FUNCTION 7: -STRING_TO_IMAGE

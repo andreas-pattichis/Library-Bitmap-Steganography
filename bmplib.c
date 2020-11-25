@@ -8,6 +8,20 @@
 
 #include "bmplib.h"
 
+
+int calculate_length_of_String(char *text){
+    int i = 0;
+    while (1){
+        if (text[i] == NULL){
+            return i;
+        }
+        if (text[i] == '\0'){
+            return i;
+        }
+        i++;
+    }
+}
+
 int convert_to_anInteger(char *arr, int arrLen){
     int sum = 0,power = arrLen*8 - 1,to_and,which = 0,pos = 7,t,add;
     /* Reverses the arr because of little endian */
@@ -126,9 +140,10 @@ void createGrayscale(IMAGE *img, char *name) {
     new.pixel_array = new_pixel_array;
 
     /* Saves the new image */
-    char *newName;
-    strncpy(newName,name,strlen(name)-4);
-    strcat(newName,"_grayscale.bmp");
+    int file_name_length = calculate_length_of_String(name);
+    char *newName = calloc(10+file_name_length+1,sizeof(char));
+    strcpy(newName,"grayscale_");
+    strcat(newName,name);
     FILE *file = fopen(newName, "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
@@ -198,10 +213,11 @@ void change_pixels(IMAGE *cover, IMAGE *secret,unsigned int proof_len, char *nam
     new.pixel_array = new_pixel_array;
 
     /* Saves the new image */
-    //char *newName = "new-";
-    //strcat(newName,name);
-    //printf("%s",newName);
-    FILE *file = fopen(/*newName*/"new-.bmp", "wb");
+    int file_name_length = calculate_length_of_String(name);
+    char *newName = calloc(4+file_name_length+1,sizeof(char));
+    strcpy(newName,"new-");
+    strcat(newName,name);
+    FILE *file = fopen(newName, "wb");
     fwrite(cover->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(cover->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
@@ -254,9 +270,11 @@ void decode_image(IMAGE *img,unsigned int proof_len, char *name){
     new.pixel_array = new_pixel_array;
 
     /* Saves the new image */
-    //char *newName = "new-";
-    // strcat(newName,name);
-    FILE *file = fopen(/*newName*/"new-new-.bmp", "wb");
+    int file_name_length = calculate_length_of_String(name);
+    char *newName = calloc(4+file_name_length+1,sizeof(char));
+    strcpy(newName,"new-");
+    strcat(newName,name);
+    FILE *file = fopen(newName, "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
@@ -320,9 +338,11 @@ void putTextInPicture(IMAGE *img, char *text, unsigned int system_key, char *nam
     new.pixel_array = new_pixel_array;
 
     /* Saves the new image */
-    //char *newName = "new-";
-    // strcat(newName,name);
-    FILE *file = fopen(/*newName*/"withEncodedText.bmp", "wb");
+    int file_name_length = calculate_length_of_String(name);
+    char *newName = calloc(4+file_name_length+1,sizeof(char));
+    strcpy(newName,"new-");
+    strcat(newName,name);
+    FILE *file = fopen(newName, "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new.pixel_array_size, file);
@@ -441,9 +461,11 @@ void stringToImage(IMAGE *img, char *textFileName, char *name){
     new->pixel_array = new_pixel_array;
 
     /* Saves the new image */
-    //char *newName = "new-";
-    // strcat(newName,name);
-    FILE *file = fopen(/*newName*/"zitima7.bmp", "wb");
+    int file_name_length = calculate_length_of_String(name);
+    char *newName = calloc(4+file_name_length+1,sizeof(char));
+    strcpy(newName,"new-");
+    strcat(newName,name);
+    FILE *file = fopen(newName, "wb");
     fwrite(img->file_head, sizeof(FILE_HEADER), 1, file);
     fwrite(img->info_head, sizeof(INFO_HEADER), 1, file);
     fwrite(&new_pixel_array[0], 1, new->pixel_array_size, file);
