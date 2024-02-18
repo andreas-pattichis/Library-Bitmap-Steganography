@@ -1,4 +1,4 @@
-/**
+
 
 # Bitmap-Steganography-Library
 
