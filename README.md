@@ -1,5 +1,3 @@
-
-
 # Bitmap-Steganography-Library
 
 Autors: Andreas Pattichis and Christian Costa
@@ -94,5 +92,3 @@ In this function the text in the inputText .txt is "converted" to a bmp image wh
 $./bmpSteganography –imageToString encryptedTextImage.bmp
 
 A text file named outputText.txt is created.
-
-*/
