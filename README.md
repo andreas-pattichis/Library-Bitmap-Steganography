@@ -1,6 +1,6 @@
 # Bitmap-Steganography-Library
 
-Autors: Andreas Pattichis and Christian Costa
+Autors: Andreas Pattichis and Christian Costa 
 
 ### Operation 1: Prints the header elements of a specified image in the following format.
 
