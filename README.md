@@ -5,7 +5,7 @@ Autors: Andreas Pattichis and Christian Costa
 ### Operation 1: Prints the header elements of a specified image in the following format.
 
 **Input example:**
-$./bmpSteganography –list 4x3.bmp image2.bmp
+$./bmpSteganography –list 4x3.bmp image2.bmp 
 
 **Output example:**
 BITMAP_FILE_HEADER ==================
